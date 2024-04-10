@@ -29,12 +29,12 @@ For EXAMPLE...
 
 ### TIM ZANDI
 
-| COMPONENT  | TASK  | COMMENT          |
-| ---------- | ----- | ---------------- |
-| #component | #task | <d/m> - #comment |
-|            |       |                  |
-|            |       |                  |
-|            |       |                  |
+| COMPONENT | TASK                 | COMMENT                                             |
+| --------- | -------------------- | --------------------------------------------------- |
+| WEBSITE   | website-setup BRANCH | 10/4 - ADDED BOOTSTRAP FUNCTIONALITY AND A BASIC UI |
+|           |                      |                                                     |
+|           |                      |                                                     |
+|           |                      |                                                     |
 
 ### IMRAN BARTON
 
