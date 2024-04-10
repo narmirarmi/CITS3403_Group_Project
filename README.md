@@ -20,12 +20,12 @@ For EXAMPLE...
 
 ### MAX SLATER
 
-| COMPONENT  | TASK  | COMMENT          |
-| ---------- | ----- | ---------------- |
-| #component | #task | <d/m> - #comment |
-|            |       |                  |
-|            |       |                  |
-|            |       |                  |
+| COMPONENT             | TASK                                     | COMMENT                                                                       |
+|-----------------------|------------------------------------------|-------------------------------------------------------------------------------|
+| OUTLINE               | create project outline                   | 10/4 - pushed project outline to branch "main"                                |
+| POLL INTERFACE DESIGN | create design reference for poll entries | 10/4 - added design references to branch "website-setup" under "/design docs/" |
+|                       |                                          |                                                                               |
+|                       |                                          |                                                                               |
 
 ### TIM ZANDI
 
