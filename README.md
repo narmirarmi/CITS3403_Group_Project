@@ -49,7 +49,7 @@ For EXAMPLE...
 
 | COMPONENT  | TASK  | COMMENT          |
 | ---------- | ----- | ---------------- |
-| #component | #task | <d/m> - #comment |
+| #component | #frontend | <d/m> - #comment |
 |            |       |                  |
 |            |       |                  |
 |            |       |                  |
