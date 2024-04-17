@@ -1,0 +1,12 @@
+{% include 'head.html' %}
+<html>
+    <div class="container-fluid h-100vh">
+        <div class="d-flex h-100 align-items-center">
+            <div class="row w-100 h-100 align-items-center justify-content-center">
+                {% block content %}
+                    {% include widget %}
+                {% endblock content %}
+            </div>
+        </div>
+    </div>
+</html>
