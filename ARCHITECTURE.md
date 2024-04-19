@@ -5,7 +5,8 @@ Run the flask server with `python3 app.py`
 
 ## Test Environment
 To run the test environment, use `testwidget.py`.\
-Change the widget being tested by editing the `widget=` variable.
+Change the widget being tested by editing the `widget=` variable\
+Change the script being tested by editing the `script="js/"` variable
 ___
 ## templates
 * **templates/**
@@ -15,5 +16,8 @@ ___
     * **poll/**
       * `PollWidget.html` polling interface widget
 * **static**
-  * `custom.css` custom css rules
-  * `colors.css` define custom css color vars
+  * **css**
+    * `custom.css` custom css rules
+    * `colors.css` define custom css color vars
+  * **js**
+    * `LoadPolLData.js` loads a poll entry from database

@@ -1,11 +1,22 @@
 {% include 'head.html' %}
+<script src="{{ url_for('static', filename=test_script) }}"></script>
 <html>
     <div class="container-fluid h-100vh">
-        <div class="d-flex h-100 align-items-center">
-            <div class="row w-100 h-100 align-items-center justify-content-center">
+        <div class="row w-100 h-100 justify-content-center">
+            <div class="row w-100 justify-content-center align-items-end">
                 {% block content %}
                     {% include widget %}
                 {% endblock content %}
+            </div>
+            <div class="row w-100 justify-content-center align-items-start">
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-warning active">
+                        <input type="radio" name="options" id="debug_true" autocomplete="off" checked>Debug On
+                    </label>
+                    <label class="btn btn-outline-info" onclick="function(){}">
+                        <input type="radio" name="options" id="debug_false" autocomplete="off">Debug Off
+                    </label>
+                </div>
             </div>
         </div>
     </div>
