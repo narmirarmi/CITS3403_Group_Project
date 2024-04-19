@@ -1,0 +1,97 @@
+body {
+    color: #000;
+    background-color: #fff;
+}
+
+.logo h1 {
+    margin-left: 20px;
+    font-family: "Reenie Beanie", cursive;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 30px;
+}
+
+.login-page {
+    max-width: 500px;
+    margin: 100px auto;
+    padding: 50px;
+    border: 1px solid #000000;
+    border-radius: 25px;
+}
+
+.btn-link i.fab.fa-facebook-f,
+.btn-link i.fab.fa-google,
+.btn-link i.fab.fa-twitter,
+.btn-link i.fab.fa-github {
+    color: #000000
+}
+
+.nav-pills .nav-link.active {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.nav-pills .nav-link {
+    color: #000000;
+}
+
+.btn-primary {
+    background-color: #000000;
+    border-color: #ffffff;
+    border-color: #000000;
+    padding: 10px 30px;
+}
+
+.btn-primary:hover {
+    background-color: #000000;
+    border-color: #ffffff;
+}
+
+.form-check-input[type="checkbox"]:checked {
+    background-color: #000000;
+    border-color: #000000;
+}
+
+.navbar {
+    border-bottom: 1px solid #000000;
+}
+
+.user-icon {
+    margin-right: 20px;
+}
+
+.logo a {
+    color: #000;
+    text-decoration: none;
+}
+
+.images-grid {
+    margin-top: 10px;
+}
+
+.images-grid .col {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.images-grid img {
+    margin-bottom: 10px;
+}
+
+.bottom-page {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.bottom-page a {
+    color: black;
+}
+
+.bottom-page a:hover {
+    font-weight: bold;
+}
