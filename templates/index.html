@@ -44,37 +44,38 @@
 
     <div class="images-grid">
         <div class="container">
+            {% for chunk in images|batch(3) %}
             <div class="row">
-                {% for name in images %}
+                {% for name in chunk %}
                 <div class="col">
-                    <img src="{{ url_for('static', filename='images/' + name) }}" alt="{{ name }}" height="300">
+                    <div class="image-poll-container">
+                        <div class="image">
+                            <img src="{{ url_for('static', filename='images/' + name) }}" alt="{{ name }}" height="300">
+                        </div>
+                        <div class="poll">
+                            <h2>Poll</h2>
+                            <form id="poll-form" action="/vote" method="post">
+                                <label for="yes">Yes</label>
+                                <input type="radio" id="yes" name="choice" value="yes">
+                                <label for="no">No</label>
+                                <input type="radio" id="no" name="choice" value="no">
+                                <button type="submit">Vote</button>
+                            </form>
+                            <div class="poll-results">
+                                <h3>Poll Results:</h3>
+                                <p>Yes: {{ poll_data['yes'] }}</p>
+                                <p>No: {{ poll_data['no'] }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
-<!-- Services Section -->
-  <p class="text-center" style="font-family: 'Asap Condensed', sans-serif; font-size: xx-large;">
-    OUR MOST RECENT POLLS
-  </p>
-
-  <div id="poll-container">
-    <h2>Poll</h2>
-    <form id="poll-form" action="/vote" method="post">
-        <label for="yes">Yes</label>
-        <input type="radio" id="yes" name="choice" value="yes">
-        <label for="no">No</label>
-        <input type="radio" id="no" name="choice" value="no">
-        <button type="submit">Vote</button>
-    </form>
-    <div id="poll-results">
-        <h3>Poll Results:</h3>
-        <p>Yes: {{ poll_data['yes'] }}</p>
-        <p>No: {{ poll_data['no'] }}</p>
-    </div>
-  </div>
-
+            {% endfor %}
         </div>
     </div>
-
+    
+    
     <div class="bottom-page">
         <div class="container">
             <div class="row">

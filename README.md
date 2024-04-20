@@ -38,12 +38,12 @@ For EXAMPLE...
 
 ### TIM ZANDI
 
-| COMPONENT | TASK                   | COMMENT                                             |
-| --------- | ---------------------- | --------------------------------------------------- |
-| WEBSITE   | website-setup BRANCH   | 10/4 - ADDED BOOTSTRAP FUNCTIONALITY AND A BASIC UI |
-| WEBSITE   | polling-feuture BRANCH | 17/4 - ADDED AJAX, JQUERY SETUP, WHERE WE CAN VOTE  |
-|           |                        |                                                     |
-|           |                        |                                                     |
+| COMPONENT | TASK                          | COMMENT                                             |
+| --------- | ----------------------------- | --------------------------------------------------- |
+| WEBSITE   | website-setup BRANCH          | 10/4 - ADDED BOOTSTRAP FUNCTIONALITY AND A BASIC UI |
+| WEBSITE   | polling-feuture BRANCH        | 17/4 - ADDED AJAX, JQUERY SETUP, WHERE WE CAN VOTE  |
+| WEBSITE   | website/polling-feture BRANCH | 20/4 MERGED THE IMAGE ITERATION                     |
+|           |                               |                                                     |
 
 ### IMRAN BARTON
 
