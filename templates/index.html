@@ -45,10 +45,9 @@
     <div class="images-grid">
         <div class="container">
             <div class="row">
-                {% for image in images %}
+                {% for name in images %}
                 <div class="col">
-                    <!-- <img src="{{ url_for('static', filename=image.url) }}" alt="{{ image.alt }}" height="300"> -->
-                    <img src="static/images/should_i_buy_it_2.png" alt="" height="300">
+                    <img src="{{ url_for('static', filename='images/' + name) }}" alt="{{ name }}" height="300">
                 </div>
                 {% endfor %}
             </div>
