@@ -1,0 +1,8 @@
+/* define custom colors for web design */
+:root {
+    --card-light : #F2FCF9;
+    --yes-primary: #BCF7BF;
+    --yes-secondary: #1E341F;
+    --no-primary: #ED1D5B;
+    --no-secondary: #49081C;
+}

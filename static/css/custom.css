@@ -1,0 +1,26 @@
+i.bi-check-circle {
+    font-size: 48pt;
+    color: var(--yes-primary);
+}
+
+i.bi-x-circle {
+    font-size: 48pt;
+    color: var(--no-primary);
+}
+
+button {
+    transition-duration: 0.4s;
+}
+
+.btn:focus {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.btn:active:focus:hover > i.bi-check-circle {
+    color: var(--yes-secondary);
+}
+
+.btn:active:focus:hover > i.bi-x-circle {
+    color: var(--no-secondary);
+}
