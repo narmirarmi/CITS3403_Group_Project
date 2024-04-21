@@ -55,6 +55,7 @@
                         <div class="poll">
                             <h2>Poll</h2>
                             <form id="poll-form" action="/vote" method="post">
+                                <input type="hidden" name="image_name" value="{{ name }}">
                                 <label for="yes">Yes</label>
                                 <input type="radio" id="yes" name="choice" value="yes">
                                 <label for="no">No</label>
@@ -63,8 +64,8 @@
                             </form>
                             <div class="poll-results">
                                 <h3>Poll Results:</h3>
-                                <p>Yes: {{ poll_data['yes'] }}</p>
-                                <p>No: {{ poll_data['no'] }}</p>
+                                <p>Yes: {{ poll_data[name]['yes'] }}</p>
+                                <p>No: {{ poll_data[name]['no'] }}</p>
                             </div>
                         </div>
                     </div>
