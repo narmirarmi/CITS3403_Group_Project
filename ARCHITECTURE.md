@@ -21,3 +21,4 @@ ___
     * `colors.css` define custom css color vars
   * **js**
     * `LoadPolLData.js` loads a poll entry from database
+    * `pollVote.js` submits a poll vote from a button input
