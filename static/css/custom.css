@@ -1,15 +1,11 @@
 i.bi-check-circle {
-    font-size: 48pt;
+    font-size: 24pt;
     color: var(--yes-primary);
 }
 
 i.bi-x-circle {
-    font-size: 48pt;
+    font-size: 24pt;
     color: var(--no-primary);
-}
-
-button {
-    transition-duration: 0.4s;
 }
 
 .btn:focus {

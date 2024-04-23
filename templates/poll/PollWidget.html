@@ -1,33 +1,25 @@
-{% include "head.html" %}
-<div class="col-4">
-    <div class="card mb-4">
-      <div class="row g-0">
-          <div class="col-7">
-              <div class="container-fluid">
-                  <img src="..." class="img-fluid rounded-start" alt="...">
-              </div>
-          </div>
-          <div class="col-5">
-              <div class="card-body px-0">
-                  <div class="col px-0">
-                      <h5 class="card-title">ITEM_PRICE</h5>
-                      <p class="card-text">ITEM_DESCRIPTION</p>
-                          <div class="container">
-                              <div class="row justify-content-center py-2">
-                                    <button class="btn btn-lg btn-outline-*" data-toggle="button" aria-pressed="false">
-                                          <i class="bi bi-check-circle"></i>
-                                    </button>
-                              </div>
-                              <div class="row justify-content-center py-2">
-                                  <button class="btn btn-lg btn-outline-*" data-toggle="button" aria-pressed="false">
-                                      <i class="bi bi-x-circle"></i>
-                                  </button>
-                              </div>
-                          </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+<script src="{{ url_for('static', filename='js/pollVote.js') }}"></script>
+<div class="card mb-4">
+    <div class="row g-2">
+        <div class="col-7">
+            <img src={{ pollImage }} %} class="img-fluid rounded-start" alt="..." id="ItemPicture">
+        </div>
+        <div class="col-5">
+            <div class="card-body px-0">
+                <div class="col px-0">
+                    <h5 class="card-title" id="itemPrice">ITEM_PRICE</h5>
+                    <p class="card-text" id="itemDescription">ITEM_DESCRIPTION</p>
+                </div>
+                <div class="row d-block w-100">
+                        <button class="btn btn-lg btn-outline-* w-100 p-0" data-toggle="button" aria-pressed="false" onclick="onPollVote('yes')">
+                            <i class="bi bi-check-circle"></i>
+                        </button>
+                        <button class="btn btn-lg btn-outline-* w-100 p-0" data-toggle="button" aria-pressed="false" onclick="onPollVote('no')">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </div>
+            </div>
+        </div>
     </div>
 </div>
 
