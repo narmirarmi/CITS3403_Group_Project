@@ -9,7 +9,7 @@ function onPollVote(vote){
     $.ajax({
           type: "POST",
           url: "/vote",
-          data: vote,
+          data: {"choice":vote},
           success: function (response) {
             if (response.success) {
               console.log("Vote successfully submitted")
