@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify, session
 import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = "secret_key"
 
 def get_image_filenames():
     images_dir = os.path.join(app.static_folder, 'images')
@@ -43,5 +43,9 @@ def vote():
     # Return a response (e.g., indicating success)
     return home()
 
+@app.route('/profile', methods=["GET"])
+def profile():
+    # Your profile route logic here
+    return render_template('profile.html')
 if __name__ == '__main__':
     app.run(debug=True)
