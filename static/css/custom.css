@@ -20,3 +20,15 @@ i.bi-x-circle {
 .btn:active:focus:hover > i.bi-x-circle {
     color: var(--no-secondary);
 }
+
+/* 
+This is for making sure the item images fit inside the div in pollWidget.html
+*/
+#ItemPicture {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 26px;
+    border-color: black;
+    border-width: 5px;
+    border-style: solid;
+}

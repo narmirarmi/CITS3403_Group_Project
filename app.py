@@ -26,7 +26,8 @@ def home():
 def vote():
     # Receive form data
     choice = request.form['choice']
-    name = request.form['image_name']
+    name = request.form['image']
+    print(name)
     
     # Retrieve poll_data from session
     poll_data = session.get('poll_data', {})

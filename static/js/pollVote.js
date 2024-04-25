@@ -1,4 +1,5 @@
-function onPollVote(vote){
+
+function onPollVote(vote, image){
 
     //handle empty input
     if( vote != "yes" || vote != "no" ){
@@ -6,10 +7,11 @@ function onPollVote(vote){
     }
 
     //POST vote request
+    console.log(image);
     $.ajax({
           type: "POST",
           url: "/vote",
-          data: {"choice":vote},
+          data: {"choice":vote, "image":image},
           success: function (response) {
             if (response.success) {
               console.log("Vote successfully submitted")
@@ -22,3 +24,21 @@ function onPollVote(vote){
           },
         });
 }
+
+  function updateResults(formId) {
+    $.getJSON("/results", function (data) {
+      // Update poll results for the specific element
+      $("#" + formId)
+        .siblings(".poll-results")
+        .find(".yes-count")
+        .text(data.yes);
+      $("#" + formId)
+        .siblings(".poll-results")
+        .find(".no-count")
+        .text(data.no);
+    });
+  }
+
+  // Initial update of results when the page loads
+  updateResults();
+});
