@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, jsonify, session
 import os
+from database import query_database, create_database_from_sql
+
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
+
 
 def get_image_filenames():
     images_dir = os.path.join(app.static_folder, 'images')
@@ -48,5 +51,9 @@ def vote():
 def profile():
     # Your profile route logic here
     return render_template('profile.html')
+
 if __name__ == '__main__':
+    # Example usage:
+    create_database_from_sql('database\create_database.sql')
+
     app.run(debug=True)

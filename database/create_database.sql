@@ -1,44 +1,42 @@
-
-
-CREATE TABLE Users (
-    UserID INT AUTO_INCREMENT PRIMARY KEY,
-    Username VARCHAR(255) UNIQUE,
-    Email VARCHAR(255) UNIQUE,
-    Password VARCHAR(255),
-    ProfilePicture VARCHAR(255)
+CREATE TABLE IF NOT EXISTS Users (
+    UserID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Username TEXT UNIQUE,
+    Email TEXT UNIQUE,
+    Password TEXT,
+    ProfilePicture TEXT
 );
 
-CREATE TABLE Images (
-    ImageID INT AUTO_INCREMENT PRIMARY KEY,
-    UserID INT,
-    ImagePath VARCHAR(255),
+CREATE TABLE IF NOT EXISTS Images (
+    ImageID INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserID INTEGER,
+    ImagePath TEXT,
     UploadDate DATETIME,
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
-CREATE TABLE Votes (
-    VoteID INT AUTO_INCREMENT PRIMARY KEY,
-    ImageID INT,
-    UserID INT,
-    Type ENUM('like', 'dislike'),
+CREATE TABLE IF NOT EXISTS Votes (
+    VoteID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ImageID INTEGER,
+    UserID INTEGER,
+    Type TEXT CHECK (Type IN ('like', 'dislike')),
     FOREIGN KEY (ImageID) REFERENCES Images(ImageID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
-CREATE TABLE Comments (
-    CommentID INT AUTO_INCREMENT PRIMARY KEY,
-    ImageID INT,
-    UserID INT,
+CREATE TABLE IF NOT EXISTS Comments (
+    CommentID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ImageID INTEGER,
+    UserID INTEGER,
     Text TEXT,
     CommentDate DATETIME,
     FOREIGN KEY (ImageID) REFERENCES Images(ImageID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
 
-CREATE TABLE Follows (
-    FollowID INT AUTO_INCREMENT PRIMARY KEY,
-    FollowerID INT,
-    FolloweeID INT,
+CREATE TABLE IF NOT EXISTS Follows (
+    FollowID INTEGER PRIMARY KEY AUTOINCREMENT,
+    FollowerID INTEGER,
+    FolloweeID INTEGER,
     FOREIGN KEY (FollowerID) REFERENCES Users(UserID),
     FOREIGN KEY (FolloweeID) REFERENCES Users(UserID)
 );
