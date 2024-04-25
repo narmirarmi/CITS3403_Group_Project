@@ -44,7 +44,7 @@ def vote():
     # Return a response (e.g., indicating success)
     return home()
 
-@app.route('/profile', methods=["GET"])
+@app.route('/profile')
 def profile():
     # Your profile route logic here
     return render_template('profile.html')
