@@ -29,6 +29,7 @@ For EXAMPLE...
 
 ### MAX SLATER
 
+ polling-feature
 | COMPONENT             | TASK                                     | COMMENT                                                                        |
 | --------------------- | ---------------------------------------- | ------------------------------------------------------------------------------ |
 | OUTLINE               | create project outline                   | 10/4 - pushed project outline to branch "main"                                 |
