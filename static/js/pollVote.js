@@ -12,11 +12,10 @@ function onPollVote(vote, image) {
     url: "/vote",
     data: { choice: vote, image: image },
     success: function (response) {
-      if (response.success) {
-        console.log("Vote successfully submitted");
-      } else {
-        console.log("Error:", response.error);
-      }
+      /* Updates the UI with the new votes */
+      let imageName = image.split("/").pop();
+      updateResults(response, imageName);
+      console.log("Vote successfully submitted");
     },
     error: function (xhr, status, error) {
       console.error("Error:", error);
@@ -24,16 +23,7 @@ function onPollVote(vote, image) {
   });
 }
 
-function updateResults(formId) {
-  $.getJSON("/vote", function (data) {
-    // Update poll results for the specific element
-    $("#" + formId)
-      .siblings(".poll-results")
-      .find(".yes-count")
-      .text(data.yes);
-    $("#" + formId)
-      .siblings(".poll-results")
-      .find(".no-count")
-      .text(data.no);
-  });
+function updateResults(data, image) {
+  $("#yes-votes").text(data[image].yes);
+  $("#no-votes").text(data[image].no);
 }

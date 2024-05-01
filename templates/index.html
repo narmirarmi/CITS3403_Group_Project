@@ -51,7 +51,7 @@
             <div class="row" id="image-row">
                 {% for name in images %}
                     <div class="col-lg-4 col-md-6 col-sm-12">
-                        {% with pollImage = "static/images/" + name %}
+                        {% with pollImage = "static/images/" + name, poll_data=poll_data %}
                             {% include "poll/PollWidget.html" %}
                         {% endwith %}
                         <div>
