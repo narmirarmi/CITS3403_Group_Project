@@ -36,7 +36,10 @@ def register():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    # add validation and processing here
+    # add validation here
+
+    # add processing to initialise a new user here, e.g. database entry, etc.
+
 
     # Print received data
     print("Registration data received:")
