@@ -24,6 +24,8 @@ function onPollVote(vote, image) {
 }
 
 function updateResults(data, image) {
-  $("#yes-votes").text(data[image].yes);
-  $("#no-votes").text(data[image].no);
+  console.log("IMMMMMAAAGGEEE");
+  console.log(image);
+  $("#yes-votes-" + image).text(data[image].yes);
+  $("#no-votes-" + image).text(data[image].no);
 }

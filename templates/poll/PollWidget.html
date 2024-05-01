@@ -28,9 +28,11 @@
                     </div>
                     <div class="row d-block w-100">
                         <!-- Vote count for each image -->
-                        <p>Yes Votes: <span id="yes-votes">{{ poll_data.get(pollImage).yes }}</span></p>
-                        <p>No Votes: <span id="no-votes">{{ poll_data.get(pollImage).no }}</span></p>
+                        {% set imageName = pollImage.split("/")[-1] %}
+                        <p>Yes Votes: <span id="yes-votes-{{ imageName }}">{{ poll_data.get(pollImage).yes  }}</span></p>
+                        <p>No Votes: <span id="no-votes-{{ imageName }}">{{ poll_data.get(pollImage).no  }}</span></p>
                     </div>
+                    
                 </div>
             </div>
         </div>
