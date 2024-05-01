@@ -54,6 +54,10 @@
                         {% with pollImage = "static/images/" + name %}
                             {% include "poll/PollWidget.html" %}
                         {% endwith %}
+                        <div>
+                            <p>Yes: {{ poll_data.get(name).yes }}</p>
+                            <p>No: {{ poll_data.get(name).no }}</p>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

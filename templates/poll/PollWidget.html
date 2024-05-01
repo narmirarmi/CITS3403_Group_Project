@@ -1,30 +1,33 @@
-<script src="{{ url_for('static', filename='js/pollVote.js') }}"></script>
-<div class="card d-block h-100 mb-4">
-    <div class="row g-2">
-        <div class="col-7 d-flex justify-content-center align-items-center">
-            <img src="{{ pollImage }}" class="img-fluid" alt="..." id="ItemPicture">
-        </div>
-        
-        <div class="col-5">
-            <div class="card-body px-0">
-                <div class="col px-0">
-                    <h5 class="card-title" id="itemPrice">{{ pollImage.split("/")[-1].split(".")[0].title() }}</h5>
-                    <p class="card-text" id="itemDescription">Description for {{ (pollImage.split("/")[-1].split(".")[0]).title() }}
-                    from database as unzipped dict</p>
-
-                </div>
-                <div class="row d-block w-100">
-                    <button class="btn btn-lg btn-outline-* w-100 p-0" data-toggle="button" aria-pressed="false" onclick="onPollVote('yes', '{{ pollImage }}')">
-                        <i class="bi bi-check-circle"></i>
-                    </button>
-                    <button class="btn btn-lg btn-outline-* w-100 p-0" data-toggle="button" aria-pressed="false" onclick="onPollVote('no', '{{ pollImage }}')">
-                        <i class="bi bi-x-circle"></i>
-                    </button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="{{ url_for('static', filename='js/pollVote.js') }}"></script>
+</head>
+<body>
+    <div class="card d-block h-100 mb-4">
+        <div class="row g-2">
+            <div class="col-7 d-flex justify-content-center align-items-center">
+                <img src="{{ pollImage }}" class="img-fluid" alt="..." id="ItemPicture">
+            </div>
+            
+            <div class="col-5">
+                <div class="card-body px-0">
+                    <div class="col px-0">
+                        <h5 class="card-title" id="itemPrice">{{ pollImage.split("/")[-1].split(".")[0].title() }}</h5>
+                        <p class="card-text" id="itemDescription">Description for {{ (pollImage.split("/")[-1].split(".")[0]).title() }}
+                        from database as unzipped dict</p>
+    
+                    </div>
+                    <div class="row d-block w-100">
+                        <button class="btn btn-lg btn-outline-* w-100 p-0" data-toggle="button" aria-pressed="false" onclick="onPollVote('yes', '{{ pollImage }}');">
+                            <i class="bi bi-check-circle"></i>
+                        </button>
+                        <button class="btn btn-lg btn-outline-* w-100 p-0" data-toggle="button" aria-pressed="false" onclick="onPollVote('no', '{{ pollImage }}');">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    Votes : {{ voteCount }}
-</div>
-
-
+    </div>  
+</body>
