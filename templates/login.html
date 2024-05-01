@@ -4,7 +4,7 @@
 <head>
     <title>should i buy it? | Login</title>
     <meta charset="utf-8">
-    <link rel="shortcut icon" href="static/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/static/images/favicon.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <link href="/Users/sepehrmoghani/Desktop/Agile Web Project/static/styles.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="/static/css/styles.css" rel="stylesheet">
     <!--Update Directory-->
 </head>
 
@@ -37,7 +38,7 @@
         <!-- Pills content -->
         <div class="tab-content">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                <form>
+                <form id = "loginForm">
                     <div class="text-center mb-3">
                         <p>Sign in with:</p>
                         <button type="button" data-mdb-button-init data-mdb-ripple-init
@@ -97,7 +98,7 @@
                 </form>
             </div>
             <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                <form>
+                <form id = "registrationForm">
                     <div class="text-center mb-3">
                         <p>Sign up with:</p>
                         <button type="button" data-mdb-button-init data-mdb-ripple-init
@@ -172,7 +173,8 @@
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="/Users/sepehrmoghani/Desktop/Agile Web Project/js/script.js"></script> <!--Update Directory-->
+    <script src="/static/js/script.js"></script>
+    <script src="/static/js/userRegistration/registerUser.js"></script>
 </body>
 
 </html>
