@@ -55,5 +55,6 @@ def profile():
 if __name__ == '__main__':
     # Example usage:
     create_database_from_sql('database\create_database.sql')
+    query_database("select * from users")
 
     app.run(debug=True)

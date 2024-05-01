@@ -11,6 +11,7 @@
                     <h5 class="card-title" id="itemPrice">{{ pollImage.split("/")[-1].split(".")[0].title() }}</h5>
                     <p class="card-text" id="itemDescription">Description for {{ (pollImage.split("/")[-1].split(".")[0]).title() }}
                     from database as unzipped dict</p>
+
                 </div>
                 <div class="row d-block w-100">
                     <button class="btn btn-lg btn-outline-* w-100 p-0" data-toggle="button" aria-pressed="false" onclick="onPollVote('yes', '{{ pollImage }}')">
@@ -23,6 +24,7 @@
             </div>
         </div>
     </div>
+    Votes : {{ voteCount }}
 </div>
 
 
