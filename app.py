@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, session
 import os
-from database import query_database, create_database_from_sql
+from database import routes
 
 
 app = Flask(__name__)
@@ -21,5 +21,27 @@ def home():
     if poll_data is None:
         poll_data = {image_name: {'yes': 0, 'no': 0} for image_name in image_filenames}
         session['poll_data'] = poll_data
-    
+
     return render_template('index.html', images=image_filenames, poll_data=poll_data)
+
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    # Access the form data sent with the request
+    name = request.form.get('name')
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    # add validation and processing here
+
+    # Print received data
+    print("Registration data received:")
+    print(f"Name: {name}")
+    print(f"Username: {username}")
+    print(f"Email: {email}")
+    print(f"Password: {password}")
+
+    # Temporarily, return a simple response
+    return jsonify(message="Registration data received"), 200
