@@ -23,38 +23,3 @@ def home():
         session['poll_data'] = poll_data
     
     return render_template('index.html', images=image_filenames, poll_data=poll_data)
-
-
-@app.route('/vote', methods=['POST'])
-def vote():
-    # Receive form data
-    choice = request.form['choice']
-    name = request.form['image']
-    print(name)
-    
-    # Retrieve poll_data from session
-    poll_data = session.get('poll_data', {})
-    
-    # Update poll_data
-    if choice == "yes":
-        poll_data[name]['yes'] += 1
-    elif choice == "no":
-        poll_data[name]['no'] += 1
-    
-    # Store updated poll_data back in session
-    session['poll_data'] = poll_data
-    
-    # Return a response (e.g., indicating success)
-    return home()
-
-@app.route('/profile')
-def profile():
-    # Your profile route logic here
-    return render_template('profile.html')
-
-if __name__ == '__main__':
-    # Example usage:
-    create_database_from_sql('database\create_database.sql')
-    query_database("select * from users")
-
-    app.run(debug=True)
