@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, jsonify, session
+from flask_cors import CORS
 import os
 from database import routes
 
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = "secret_key"
 
 
@@ -45,3 +47,7 @@ def register():
 
     # Temporarily, return a simple response
     return jsonify(message="Registration data received"), 200
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

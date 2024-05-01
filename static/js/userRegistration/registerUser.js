@@ -19,7 +19,7 @@ $(document).ready(function() {
         // Send the data using AJAX
         $.ajax({
             type: 'POST',
-            url: '/register',
+            url: 'http://localhost:5000/register',
             data: formData,
             success: function(response) {
                 // Handle success
