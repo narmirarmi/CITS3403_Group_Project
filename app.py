@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify, session
 import os
-from database import query_database, create_database_from_sql
 
 
 app = Flask(__name__)
