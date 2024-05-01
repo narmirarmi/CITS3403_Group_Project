@@ -1,0 +1,59 @@
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPollModal" data-bs-whatever="@createPoll">Create New Poll</button>
+<script src="{{ url_for('static', filename='js/createPoll.js') }}"></script>
+
+<div class="modal fade" id="newPollModal" tabindex="-1" aria-labelledby="newPollModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newPollModalLabel">New Poll</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row h-100">
+                        <div class="col-7 flex-grow-1 align-self-center h-100">
+                            <label for="product-image" class="col-form-label">Product Image:</label>
+                            <div class="row align-content-center h-100" id="image-input">
+                                <span class="border h-100">
+                                    <input type="file" class="form-control-file h-100" id="product-image-file">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="row d-block w-100">
+                                <div class="col">
+                                    <label for="product-title" class="col-form-label">Product Title:</label>
+                                    <input type="text" class="form-control" id="product-title">
+                                </div>
+                                <div class="col">
+                                    <label for="product-price" class="col-form-label">Product Price:</label>
+                                    <input type="text" class="form-control" id="product-price">
+                                </div>
+                                <div class="col">
+                                    <label for="product-desc" class="col-form-label">Product Description:</label>
+                                    <textarea class="form-control" id="message-text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!--
+                <form>
+                    <div class="mb-3">s
+                        <label for="recipient-name" class="col-form-label">Product URL:</label>
+                        <input type="text" class="form-control" id="recipient-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Product Title:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                </form>
+                -->
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>
