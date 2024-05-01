@@ -6,7 +6,6 @@ function onPollVote(vote, image) {
   }
 
   //POST vote request
-  console.log(image);
   $.ajax({
     type: "POST",
     url: "/vote",
@@ -24,7 +23,6 @@ function onPollVote(vote, image) {
 }
 
 function updateResults(data, image) {
-  console.log("IMMMMMAAAGGEEE");
   console.log(image);
   $("#yes-votes-" + image).text(data[image].yes);
   $("#no-votes-" + image).text(data[image].no);

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <script src="{{ url_for('static', filename='js/pollVote.js') }}"></script>
 </head>
@@ -29,8 +28,8 @@
                     <div class="row d-block w-100">
                         <!-- Vote count for each image -->
                         {% set imageName = pollImage.split("/")[-1] %}
-                        <p>Yes Votes: <span id="yes-votes-{{ imageName }}">{{ poll_data.get(pollImage).yes  }}</span></p>
-                        <p>No Votes: <span id="no-votes-{{ imageName }}">{{ poll_data.get(pollImage).no  }}</span></p>
+                        <p>Yes Votes: <span id="yes-votes-{{ imageName }}">{{ poll_data.get(imageName).yes  }}</span></p>
+                        <p>No Votes: <span id="no-votes-{{ imageName }}">{{ poll_data.get(imageName).no  }}</span></p>
                     </div>
                     
                 </div>
