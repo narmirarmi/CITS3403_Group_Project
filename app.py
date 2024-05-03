@@ -1,17 +1,23 @@
 from flask import Flask, render_template, request, jsonify, session
 from flask_cors import CORS
+from sqlalchemy.exc import IntegrityError
 import os
-from database import routes
+import re
+from database.models import db, Vote, Follow, Comment, User, Image
 
 
 app = Flask(__name__)
 CORS(app)
 app.secret_key = "secret_key"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///should_i_buy_it.db'
+db.init_app(app)
+
 
 
 def get_image_filenames():
     images_dir = os.path.join(app.static_folder, 'images')
     return [filename for filename in os.listdir(images_dir)]
+
 
 @app.route('/')
 def home():
@@ -27,7 +33,6 @@ def home():
     return render_template('index.html', images=image_filenames, poll_data=poll_data)
 
 
-
 @app.route('/register', methods=['POST'])
 def register():
     # Access the form data sent with the request
@@ -36,20 +41,53 @@ def register():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    # add validation here
+    errors = []
 
-    # add processing to initialise a new user here, e.g. database entry, etc.
+    # Check required fields
+    if not name:
+        errors.append('Name is required.')
+    if not username:
+        errors.append('Username is required.')
+    if not email:
+        errors.append('Email is required.')
+    if not password:
+        errors.append('Password is required.')
+
+    if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        errors.append('Invalid email format.')
+
+    if password and len(password) < 8:
+        errors.append('Password must be at least 8 characters long.')
+
+    # Check for duplicate username / email addresses
+    if username and User.query.filter_by(username=username).first():
+        errors.append('Username is already taken.')
+    if email and User.query.filter_by(email=email).first():
+        errors.append('Email is already in use.')
+
+    if errors:
+        return jsonify({"errors": errors}), 400
+
+    # Otherwise, create a new user
+    new_user = User(username=username, email=email, password=password)
+    db.session.add(new_user)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify(message="Registration failed due to a database error."), 500
+
+    print(f"new user: {new_user.username}")
+    return jsonify(message="Registration successful!"), 201
 
 
-    # Print received data
-    print("Registration data received:")
-    print(f"Name: {name}")
-    print(f"Username: {username}")
-    print(f"Email: {email}")
-    print(f"Password: {password}")
-
-    # Temporarily, return a simple response
-    return jsonify(message="Registration data received"), 200
+@app.route('/users')
+def users():
+    with app.app_context():
+        # Retrieve all users from the database
+        user_list = User.query.all()
+        users_data = [{'id': user.id, 'username': user.username, 'email': user.email} for user in user_list]
+        return jsonify(users=users_data)
 
 
 if __name__ == "__main__":
