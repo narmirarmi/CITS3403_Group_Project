@@ -1,0 +1,34 @@
+i.bi-check-circle {
+    font-size: 24pt;
+    color: var(--yes-primary);
+}
+
+i.bi-x-circle {
+    font-size: 24pt;
+    color: var(--no-primary);
+}
+
+.btn:focus {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.btn:active:focus:hover > i.bi-check-circle {
+    color: var(--yes-secondary);
+}
+
+.btn:active:focus:hover > i.bi-x-circle {
+    color: var(--no-secondary);
+}
+
+/* 
+This is for making sure the item images fit inside the div in pollWidget.html
+*/
+#ItemPicture {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 26px;
+    border-color: black;
+    border-width: 5px;
+    border-style: solid;
+}
