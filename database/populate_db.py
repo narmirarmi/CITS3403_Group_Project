@@ -1,8 +1,26 @@
 from faker import Faker
 import random
 from datetime import datetime, timedelta
-from your_application import db
-from your_application.models import User, Image, Vote, Comment, Follow
+from models import db, User, Image, Vote, Comment, Follow
+import os
+import sys
+from sqlalchemy import create_engine
+engine = create_engine('sqlite:///database.db')
+
+#We need sessions like below to interact with the database
+"""
+from sqlalchemy.orm import sessionmaker
+
+Session = sessionmaker(bind=engine)
+session = Session()
+"""
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_dir = os.path.dirname(current_dir)
+sys.path.append(project_dir)
+
+# Now you can import app.py
+from app import app
 
 # Don't change the seed please
 SEED = 4321
@@ -82,6 +100,9 @@ def add_dummy_data():
     create_follows(users)
 
 if __name__ == '__main__':
-    db.create_all()  # Ensure that all tables are created
-    add_dummy_data()
+    #engine = create_engine('sqlite:///database.db')
+    #db.metadata.create_all(db.engine)
+    with app.app_context():
+        db.metadata.create_all(db.engine)
+        add_dummy_data()
     print("Dummy data has been added to the database.")
