@@ -20,11 +20,13 @@ body {
     border-radius: 25px;
 }
 
-.btn-link i.fab.fa-facebook-f,
-.btn-link i.fab.fa-google,
-.btn-link i.fab.fa-twitter,
-.btn-link i.fab.fa-github {
-    color: #000000
+.login-icon {
+    color: #000000;
+    background-color: #FFFFFF;
+}
+.login-icon:hover, .login-icon:focus {
+    color: #FFFFFF;
+    background-color: #000000;
 }
 
 .nav-pills .nav-link.active {

@@ -6,7 +6,6 @@
 
 <head>
     <title>should i buy it? | Login</title>
-    <script src="static/js/registerUser.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     <!--Update Directory-->
 </head>
@@ -37,41 +36,27 @@
         <div class="tab-content">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
                 <form id = "loginForm">
-                    <div class="text-center mb-3">
-                        <p>Sign in with:</p>
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                            class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-facebook-f"></i>
-                        </button>
+                    <div class="row w-100 justify-text-center mb-3">
 
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                            class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-google"></i>
-                        </button>
+                        <!-- Load logos with reusable button format -->
+                        {% for icon in ["fa-facebook-f", "fa-google", "fa-twitter", "fa-github"] %}
+                                {% with logo=icon %}
+                                    {% include "login/LoginIcon.html" %}
+                                {% endwith %}
+                        {% endfor %}
 
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                            class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-twitter"></i>
-                        </button>
-
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                            class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-github"></i>
-                        </button>
                     </div>
-
-                    <p class="text-center">or:</p>
 
                     <!-- Email input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="email" id="loginName" class="form-control" />
                         <label class="form-label" for="loginName">Email or username</label>
+                        <input type="text" id="loginName" class="form-control" placeholder="Email or Username..."/>
                     </div>
 
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="loginPassword" class="form-control" />
                         <label class="form-label" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Password..."/>
                     </div>
 
                     <!-- 2 column grid layout -->
@@ -92,64 +77,54 @@
 
                     <!-- Submit button -->
                     <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-primary btn-block mb-4">Sign in</button>
+                        class="btn btn-primary btn-block mb-4 w-100">Sign in</button>
                 </form>
             </div>
             <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
                 <form id = "registrationForm">
-                    <div class="text-center mb-3">
+
+
+                    <div class="row w-100 text-center mb-3">
                         <p>Sign up with:</p>
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                            class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-facebook-f"></i>
-                        </button>
+                        <!-- Load logos with reusable button format -->
+                        {% for icon in ["fa-facebook-f", "fa-google", "fa-twitter", "fa-github"] %}
+                                {% with logo=icon %}
+                                    {% include "login/LoginIcon.html" %}
+                                {% endwith %}
+                        {% endfor %}
 
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                            class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-google"></i>
-                        </button>
-
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                            class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-twitter"></i>
-                        </button>
-
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init
-                            class="btn btn-link btn-floating mx-1">
-                            <i class="fab fa-github"></i>
-                        </button>
                     </div>
 
                     <p class="text-center">or:</p>
 
                     <!-- Name input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="text" id="registerName" class="form-control" />
                         <label class="form-label" for="registerName">Name</label>
+                        <input type="text" id="registerName" class="form-control" />
                     </div>
 
                     <!-- Username input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="text" id="registerUsername" class="form-control" />
                         <label class="form-label" for="registerUsername">Username</label>
+                        <input type="text" id="registerUsername" class="form-control" />
                     </div>
 
                     <!-- Email input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="email" id="registerEmail" class="form-control" />
                         <label class="form-label" for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" class="form-control" />
                     </div>
 
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="registerPassword" class="form-control" />
                         <label class="form-label" for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" class="form-control" />
                     </div>
 
                     <!-- Repeat Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="registerRepeatPassword" class="form-control" />
                         <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+                        <input type="password" id="registerRepeatPassword" class="form-control" />
                     </div>
 
                     <!-- Checkbox -->
@@ -169,6 +144,12 @@
         </div>
         <!-- Pills content -->
     </div>
+
+    <!-- resources/foot.html has all the post load data -->
+    {% include "resources/foot.html" %}
+    <script src="/static/js/loginUser.js"></script>
+    <script src="/static/js/registerUser.js"></script>
+
 </body>
 
 </html>
