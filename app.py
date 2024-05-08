@@ -91,6 +91,22 @@ def users():
         user_list = User.query.all()
         users_data = [{'id': user.id, 'username': user.username, 'email': user.email} for user in user_list]
         return jsonify(users=users_data)
+    
+@app.route('/vote', methods=['POST'])
+def vote():
+    #Do not want the whole extended path
+    selected_candidate = request.form['image'].split("/")[-1]
+    yesVote = request.form['choice'] == "yes"
+    votes = session.get('poll_data')
+    if yesVote:
+        votes[selected_candidate]["yes"] += 1
+    else:
+        votes[selected_candidate]["no"] += 1
+
+    session['poll_data'] = votes
+    print(jsonify(votes))
+    return jsonify(votes)  # Respond with poll data as JSON
+
 
 
 if __name__ == "__main__":
