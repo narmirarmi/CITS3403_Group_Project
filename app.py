@@ -12,14 +12,11 @@ app.secret_key = "secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///should_i_buy_it.db'
 db.init_app(app)
 
-
-
 def get_image_filenames():
     images_dir = os.path.join(app.static_folder, 'images')
     return [filename for filename in os.listdir(images_dir)]
 
 image_filenames = get_image_filenames()
-
 
 @app.route('/')
 def home():
@@ -29,9 +26,11 @@ def home():
     if poll_data is None:
         poll_data = {image_name: {'yes': 0, 'no': 0} for image_name in image_filenames}
         session['poll_data'] = poll_data
-
     return render_template('index.html', images=image_filenames, poll_data=poll_data)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 @app.route('/register', methods=['POST'])
 def register():

@@ -14,17 +14,19 @@ from app import app
 
 
 # Don't change the seed please
+# I can do whatever I liiiiiikeeee
 SEED = 4321
 fake = Faker()
 Faker.seed(SEED)
 random.seed(SEED)
 
-
+# populate the database with random users
 def create_users(n):
     users = []
+    emails = {}
     for _ in range(n):
         username = fake.user_name()
-        email = fake.email()
+        email = fake.email()    # this is causing an error its making duplicate emails fuuuukkk my liiiife -Max
         password = fake.password(length=12)
         profile_picture = fake.image_url()
         user = User(username=username, email=email, password=password, profile_picture=profile_picture)
@@ -33,7 +35,7 @@ def create_users(n):
     db.session.commit()
     return users
 
-
+# populate the database with random images
 def create_images(users):
     images = []
     for user in users:
@@ -47,7 +49,7 @@ def create_images(users):
     db.session.commit()
     return images
 
-
+# populate the datbase with random votes
 def create_votes(users, images):
     votes = []
     for image in images:
@@ -60,7 +62,7 @@ def create_votes(users, images):
     db.session.add_all(votes)
     db.session.commit()
 
-
+# populate the database with random comments
 def create_comments(users, images):
     comments = []
     for image in images:
@@ -73,7 +75,7 @@ def create_comments(users, images):
     db.session.add_all(comments)
     db.session.commit()
 
-
+# populate the database with random follows
 def create_follows(users):
     follows = []
     for user in users:
@@ -86,7 +88,7 @@ def create_follows(users):
     db.session.add_all(follows)
     db.session.commit()
 
-
+# create dummy data using above functions
 def add_dummy_data():
     # Generate Users
     users = create_users(10)  # Creating 10 dummy users
@@ -99,7 +101,7 @@ def add_dummy_data():
     # Generate Follows
     create_follows(users)
 
-
+# main function call
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Ensure that all tables are created

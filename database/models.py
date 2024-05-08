@@ -3,7 +3,7 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-
+# user table
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255), unique=True, nullable=False)
@@ -17,7 +17,7 @@ class User(db.Model):
     followers = db.relationship('Follow', foreign_keys='Follow.follower_id', backref='follower', lazy=True)
     followees = db.relationship('Follow', foreign_keys='Follow.followee_id', backref='followee', lazy=True)
 
-
+# images table metadata
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -27,14 +27,14 @@ class Image(db.Model):
     votes = db.relationship('Vote', backref='image', lazy=True)
     comments = db.relationship('Comment', backref='image', lazy=True)
 
-
+# votes table metadata
 class Vote(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_id = db.Column(db.Integer, db.ForeignKey('image.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     type = db.Column(db.Enum('like', 'dislike'), nullable=False)
 
-
+# comments table metadata
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     image_id = db.Column(db.Integer, db.ForeignKey('image.id'), nullable=False)
@@ -42,7 +42,7 @@ class Comment(db.Model):
     text = db.Column(db.Text, nullable=False)
     comment_date = db.Column(db.DateTime, default=datetime.utcnow)
 
-
+# followers table metadata
 class Follow(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

@@ -4,11 +4,12 @@ body {
 }
 
 .logo h1 {
-    margin-left: 20px;
+    margin-left: 30px;
     font-family: "Reenie Beanie", cursive;
     font-weight: 800;
-    font-style: normal;
     font-size: 30px;
+    font-style: normal;
+    text-align: center;
 }
 
 .login-page {
