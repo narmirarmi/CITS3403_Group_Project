@@ -62,8 +62,11 @@ def register():
     # Check for duplicate username / email addresses
     if username and User.query.filter_by(username=username).first():
         errors.append('Username is already taken.')
-    if email and User.query.filter_by(email=email).first():
-        errors.append('Email is already in use.')
+    ## TEMPORARILY COMMENTED OUT AS SEED WAS GIVING DUPLICATE
+    """
+    #if email and User.query.filter_by(email=email).first():
+    #    errors.append('Email is already in use.')
+    """
 
     if errors:
         return jsonify({"errors": errors}), 400

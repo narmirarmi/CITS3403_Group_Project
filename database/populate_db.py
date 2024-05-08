@@ -1,6 +1,14 @@
 from faker import Faker
 import random
 from datetime import datetime, timedelta
+import sys
+import os
+
+# Get the current directory of this script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Add the parent directory (root directory) to the Python path
+project_dir = os.path.dirname(current_dir)
+sys.path.append(project_dir)
 from database.models import *
 from app import app
 
