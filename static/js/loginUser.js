@@ -15,7 +15,7 @@ $(document).ready(function() {
         // Send the data using AJAX
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:5000/loginuser',
+            url: 'http://localhost:5000/auth/login',
             data: formData,
             success: function(response) {
                 // Handle success
