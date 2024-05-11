@@ -12,14 +12,11 @@ app.secret_key = "secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///should_i_buy_it.db'
 db.init_app(app)
 
-
-
 def get_image_filenames():
     images_dir = os.path.join(app.static_folder, 'images')
     return [filename for filename in os.listdir(images_dir)]
 
 image_filenames = get_image_filenames()
-
 
 @app.route('/')
 def home():
@@ -29,9 +26,50 @@ def home():
     if poll_data is None:
         poll_data = {image_name: {'yes': 0, 'no': 0} for image_name in image_filenames}
         session['poll_data'] = poll_data
-
     return render_template('index.html', images=image_filenames, poll_data=poll_data)
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/loginuser', methods=['POST'])
+def validateLogin():
+
+    print('endpoint LOGIN_USER reached')
+    login_mode = 0  # check if user submitted an email or a username
+
+    #access form data
+    user = request.form.get('username')
+    password = request.form.get('password')
+
+    errors = []
+    if not user:
+        errors.append('Username / Email is required.')
+    if not password:
+        errors.append('Password is required.')
+
+    # flip login_mode to 1 if email was passed instead of name
+    if user and re.match(r"[^@]+@[^@]+\.[^@]+", user):
+        login_mode = 1
+
+    # check password against email if login_mode is 1
+    if login_mode == 1:
+        if user and not User.query.filter_by(email=user).first():
+            errors.append('Email not found')
+        elif user and password != User.query.filter_by(email=user).first().password:
+            errors.append('Incorrect password')
+
+    # check password against username if login_mode is 0
+    elif login_mode == 0:
+        if user and not User.query.filter_by(username=user).first():
+            errors.append('Username not found')
+        elif user and password != User.query.filter_by(username=user).first().password:
+            errors.append('Incorrect password')
+
+    if errors:
+        return jsonify({"errors": errors}), 400
+
+    return jsonify(message="Successfully logged in as {}".format(user)), 201
 
 @app.route('/register', methods=['POST'])
 def register():
