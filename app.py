@@ -26,7 +26,8 @@ def home():
     if poll_data is None:
         poll_data = {image_name: {'yes': 0, 'no': 0} for image_name in image_filenames}
         session['poll_data'] = poll_data
-    return render_template('index.html', images=image_filenames, poll_data=poll_data)
+
+    return render_template('index.html', images=image_filenames, poll_data=poll_data, tab_bottom=True)
 
 @app.route('/login')
 def login():
