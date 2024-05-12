@@ -12,6 +12,14 @@ app.secret_key = "secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///should_i_buy_it.db'
 db.init_app(app)
 
+# Define the allowed file extensions
+IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Function to check if file extension is allowed
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in IMAGE_EXTENSIONS
+
 def get_image_filenames():
     images_dir = os.path.join(app.static_folder, 'images')
     return [filename for filename in os.listdir(images_dir)]
@@ -32,6 +40,29 @@ def home():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
+@app.route('/post', methods=['GET', 'POST'])
+def addListing():
+    if request.method == 'POST':
+        # Handle the form submission
+        if 'file' in request.files:
+            file = request.files['file']
+            # Check if file is uploaded
+            if file.filename == '':
+                return "No file selected"
+            # Check if file has an allowed extension
+            if file and allowed_file(file.filename):
+                # Save the file to the desired location or perform further processing
+                # For example: file.save('/path/to/uploaded_files/' + secure_filename(file.filename))
+                return "File uploaded successfully"
+            else:
+                return "File type not allowed"
+        else:
+            return "No file part in the request"
+    else:
+        # Render the form template for GET requests
+        return render_template('addListing.html', endpoint='addListing')
+
 
 @app.route('/loginuser', methods=['POST'])
 def validateLogin():

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %} Add Item {% endblock %}
+{% block content %}
+<form method="POST" action="{{ url_for(endpoint) }}" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".png, .jpg, .jpeg, .gif">
+    <button type="submit">Upload</button>
+</form>
+{% endblock %}
