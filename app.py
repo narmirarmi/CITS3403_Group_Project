@@ -1,6 +1,7 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
+from werkzeug.utils import secure_filename
 import os
 import re
 from database.models import db, Vote, Follow, Comment, User, Image
@@ -10,6 +11,7 @@ app = Flask(__name__)
 CORS(app)
 app.secret_key = "secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///should_i_buy_it.db'
+app.config['UPLOAD_FOLDER'] = "static\images"
 db.init_app(app)
 
 # Define the allowed file extensions
@@ -27,7 +29,7 @@ def get_image_filenames():
 image_filenames = get_image_filenames()
 
 @app.route('/')
-def home():
+def home(banner_message=None):
     # Retrieve poll_data from session, or initialize with zeros if it doesn't exist
     poll_data = session.get('poll_data')
     print(poll_data)
@@ -35,7 +37,9 @@ def home():
         poll_data = {image_name: {'yes': 0, 'no': 0} for image_name in image_filenames}
         session['poll_data'] = poll_data
 
-    return render_template('index.html', images=image_filenames, poll_data=poll_data, tab_bottom=True)
+    banner_message = session.pop('banner_message', None)  # Retrieve and remove banner_message from session
+
+    return render_template('index.html', images=image_filenames, poll_data=poll_data, tab_bottom=True, banner_message=banner_message)
 
 @app.route('/login')
 def login():
@@ -57,9 +61,12 @@ def addListing():
             return "No file selected"
         # Check if file has an allowed extension
         if image and allowed_file(image.filename):
-            # Save the file to the desired location or perform further processing
-            # For example: file.save('/path/to/uploaded_files/' + secure_filename(file.filename))
-            return render_template('index.html', tab_bottom=True, banner_message="Successfully added listing!")
+            # Saves to the images file, and prevent SQL injection and other attacks of that type
+            filename = secure_filename(title)
+            extension = image.filename.split(".")[-1]
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename + extension))
+            session['banner_message'] = "Successfully added listing!"
+            return redirect(url_for('home'))
         else:
             return "File type not allowed"
 
