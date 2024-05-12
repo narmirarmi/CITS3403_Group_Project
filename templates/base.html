@@ -38,6 +38,13 @@
         </div>
     </nav>
 
+{% if banner_message %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ banner_message }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
     <!-- This block is where we render page specific content within -->
     {% block content %}
     {% endblock %}

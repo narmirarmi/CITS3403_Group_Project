@@ -44,21 +44,25 @@ def login():
 @app.route('/post', methods=['GET', 'POST'])
 def addListing():
     if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['description']
+        image = request.files['image']
         # Handle the form submission
-        if 'file' in request.files:
-            file = request.files['file']
-            # Check if file is uploaded
-            if file.filename == '':
-                return "No file selected"
-            # Check if file has an allowed extension
-            if file and allowed_file(file.filename):
-                # Save the file to the desired location or perform further processing
-                # For example: file.save('/path/to/uploaded_files/' + secure_filename(file.filename))
-                return "File uploaded successfully"
-            else:
-                return "File type not allowed"
+        print(title)
+        print(description)
+        print(image)
+
+        # Check if file is uploaded
+        if image.filename == '':
+            return "No file selected"
+        # Check if file has an allowed extension
+        if image and allowed_file(image.filename):
+            # Save the file to the desired location or perform further processing
+            # For example: file.save('/path/to/uploaded_files/' + secure_filename(file.filename))
+            return render_template('index.html', tab_bottom=True, banner_message="Successfully added listing!")
         else:
-            return "No file part in the request"
+            return "File type not allowed"
+
     else:
         # Render the form template for GET requests
         return render_template('addListing.html', endpoint='addListing')
