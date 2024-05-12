@@ -26,10 +26,20 @@ def get_image_filenames():
     images_dir = os.path.join(app.static_folder, 'images')
     return [filename for filename in os.listdir(images_dir)]
 
+# Define the filter function
+def underscore_to_space(s):
+    return s.replace('_', ' ')
+
+# Register the filter using a decorator
+@app.template_filter('underscore_to_space')
+def underscore_to_space_filter(s):
+    return underscore_to_space(s)
+
 image_filenames = get_image_filenames()
 
 @app.route('/')
 def home(banner_message=None):
+    image_filenames = get_image_filenames()
     # Retrieve poll_data from session, or initialize with zeros if it doesn't exist
     poll_data = session.get('poll_data')
     print(poll_data)
@@ -64,7 +74,13 @@ def addListing():
             # Saves to the images file, and prevent SQL injection and other attacks of that type
             filename = secure_filename(title)
             extension = image.filename.split(".")[-1]
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename + extension))
+            filename = filename + "."+extension
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # Update poll_data with the new item initialized to 0 counts
+            poll_data = session.get('poll_data', {})
+            poll_data[filename] = {'yes': 0, 'no': 0}
+            session['poll_data'] = poll_data
+            
             session['banner_message'] = "Successfully added listing!"
             return redirect(url_for('home'))
         else:
