@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from flask_cors import CORS
 from sqlalchemy.exc import IntegrityError
 import os
@@ -12,13 +12,35 @@ app.secret_key = "secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///should_i_buy_it.db'
 db.init_app(app)
 
+from database.routes import register_routes
+register_routes(app, db)
+
+"""
+# get this function to call when the session expires...
+def clear_session():
+    session.clear()
+    return redirect(url_for("login"))
+
+# to persist cookies on the client side, as of the session on the server-side
+def set_cookies():
+    response = make_response(render_template(...))
+    response.set_cookie(key: -, value: -)
+    ** to remove cookie instead we set_cooke(key: - , expires=0) # no value
+    return response
+
+def get_cookies():
+    cookie_value = request.cookies["hashed_password"]
+    return ... could potentially add this as a json request when the same user goes to login
+
+"""
+
 def get_image_filenames():
     images_dir = os.path.join(app.static_folder, 'images')
     return [filename for filename in os.listdir(images_dir)]
 
 image_filenames = get_image_filenames()
 
-@app.route('/')
+#@app.route('/')
 def home():
     # Retrieve poll_data from session, or initialize with zeros if it doesn't exist
     poll_data = session.get('poll_data')
