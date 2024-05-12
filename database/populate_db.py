@@ -42,8 +42,10 @@ def create_images(users):
         for _ in range(random.randint(0,
                                       3)):  # Each user will have 1-3 images (maybe we should make it 0-x but for now 1-3 is fine
             image_path = fake.image_url()
+            post_title = fake.sentence()
+            post_description = fake.paragraph()
             upload_date = datetime.utcnow() - timedelta(days=random.randint(0, 10))
-            image = Image(user_id=user.id, image_path=image_path, upload_date=upload_date)
+            image = Image(user_id=user.id, post_description=post_description, post_title=post_title,image_path=image_path, upload_date=upload_date)
             images.append(image)
     db.session.add_all(images)
     db.session.commit()
