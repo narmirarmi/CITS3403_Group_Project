@@ -6,8 +6,9 @@ import re
 from database.models import db, User
 import functools
 
-
+# default app context
 app = Flask(__name__)
+app.config.from_object('config.Config')
 
 # app factory
 def create_app(config_filename):
@@ -63,7 +64,7 @@ def users():
 
 if __name__ == "__main__":
     # load from main.cfg
-    app = create_app('config.Config')
+    app = create_app('config.InitialisingConfig')
 
     #run the application
     app.run(debug=True)

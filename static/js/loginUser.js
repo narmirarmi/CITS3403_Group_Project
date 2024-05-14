@@ -19,8 +19,10 @@ $(document).ready(function() {
             data: formData,
             success: function(response) {
                 // Handle success
-                console.log('Login successful', response);
-                alert('Login successful', response);
+                console.log('Login successful', response.message);
+                alert('Login successful: \n' + response.message + '\n' + response.session_token);
+                localStorage.setItem(response.session_token, "should_i_buy_it.current_session")
+                console.log("Successfully wrote session token")
             },
             error: function(xhr, status, error) {
                 // Handle errors

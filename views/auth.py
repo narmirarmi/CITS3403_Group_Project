@@ -9,7 +9,7 @@
 import functools
 import re
 from sqlalchemy.exc import IntegrityError
-from database.models import db, User
+from database.models import db, User, Session
 
 from flask import (
     current_app, Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
@@ -46,21 +46,31 @@ def validateLogin():
     if login_mode == 1:
         if user and not User.query.filter_by(email=user).first():
             errors.append('Email not found')
-        elif user and password != User.query.filter_by(email=user).first().password:
-            errors.append('Incorrect password')
 
     # check password against username if login_mode is 0
     elif login_mode == 0:
         if user and not User.query.filter_by(username=user).first():
             errors.append('Username not found')
-        elif user and password != User.query.filter_by(username=user).first().password:
-            errors.append('Incorrect password')
+
+    isPasswordValid = check_password(password, User.query.filter_by(username=user).first().password)
+    if not isPasswordValid:
+        errors.append('Incorrect password')
 
     if len(errors) != 0:
         return jsonify({"errors": errors}), 400
 
     # SESSION ID HANDLING
-    return jsonify(message="Successfully logged in as {}".format(user)), 200
+    new_session = Session(
+        id=generate_session_token(),
+        session_time=datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"),
+        user_id=User.query.filter_by(username=user).first().id,
+        )
+    db.session.add(new_session)
+    db.session.commit()
+    print("Wrote new session ID ", new_session.id)
+    # END SESSION ID HANDLING
+
+    return jsonify(message="Successfully logged in as {}".format(user), session_token=new_session.id), 200
 
 @auth.route('/register', methods=['POST'])
 def register():
@@ -101,7 +111,7 @@ def register():
         return jsonify({"errors": errors}), 400
 
     # Otherwise, create a new user
-    new_user = User(username=username, email=email, password=password)
+    new_user = User(username=username, email=email, password=hash_password(password))
     db.session.add(new_user)
     try:
         db.session.commit()
@@ -120,14 +130,12 @@ def hash_password(password):
 
 # check a password
 def check_password(attempt, password):
-    attemptBytes = attempt.encode('utf-8')
-    result = wz.check_password_hash(attemptBytes, password)
+    result = wz.check_password_hash(password, attempt)
     return result
 
 # generate new session token based on the current time
 def generate_session_token():
-    bytes = datetime.now().encode('utf-8')
-    session_hash = wz.generate_password_hash(bytes)
+    session_hash = wz.generate_password_hash(datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
     return session_hash
 
 # check if a session token is valid

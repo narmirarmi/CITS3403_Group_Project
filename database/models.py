@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -16,6 +17,11 @@ class User(db.Model):
     votes = db.relationship('Vote', backref='user', lazy=True)
     comments = db.relationship('Comment', backref='user', lazy=True)
     followers = db.relationship('Follow', foreign_keys='Follow.follower_id', backref='follower', lazy=True)
+
+    def set_password(self, secret):
+        self.password = generate_password_hash(secret)
+    def check_password(self, secret):
+        return check_password_hash(self.password, secret)
 
 # images table metadata
 class Image(db.Model):
@@ -50,8 +56,6 @@ class Follow(db.Model):
 
 # store session data
 class Session(db.Model):
-
-    #also store the hashed id in the browser's localstorage for referencing
-    id = db.Column(db.LargeBinary, primary_key=True)
-    session_time = db.Column(db.DateTime, default=datetime.utcnow)
+    id = db.Column(db.String(255), primary_key=True)
+    session_time = db.Column(db.String(255), default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
