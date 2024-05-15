@@ -31,10 +31,10 @@
                         <!-- thumbs up and thumbs down respectively -->
                         <div class="row">
                             <div class="col">
-                                <i class="{{ imageName.split('.')[0] }}1 bi-hand-thumbs-up{{ likeFill }}"></i><span id="yes-votes-{{ imageName.split('.')[0] }}">{{ object.likes_count }}</span>
+                                <i class="{{ imageName.split('.')[0] }}1 bi-hand-thumbs-up{% if object.user_vote == 'like' %}-fill{% endif %}"></i><span id="yes-votes-{{ imageName.split('.')[0] }}">{{ object.likes_count }}</span>
                             </div>
                             <div class="col">
-                                <i class="{{ imageName.split('.')[0] }}2 bi-hand-thumbs-down{{ dislikeFill }}"></i><span id="no-votes-{{ imageName.split('.')[0] }}">{{ object.dislikes_count }}</span>
+                                <i class="{{ imageName.split('.')[0] }}2 bi-hand-thumbs-down{% if object.user_vote == 'dislike' %}-fill{% endif %}"></i><span id="no-votes-{{ imageName.split('.')[0] }}">{{ object.dislikes_count }}</span>
                             </div>
                         </div>
                         

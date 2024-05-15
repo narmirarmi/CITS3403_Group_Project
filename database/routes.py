@@ -13,6 +13,15 @@ def register_routes(app, db):
         for image in images:
             likes_count = Vote.query.filter_by(image_id=image.id, type='like').count()
             dislikes_count = Vote.query.filter_by(image_id=image.id, type='dislike').count()
+
+            user_vote = None  # Default to None if user hasn't voted
+            #if current_user.is_authenticated:  # Check if user is authenticated 
+            #replace with the current_user
+            user_vote = Vote.query.filter_by(image_id=image.id, user_id=2).first()
+            if user_vote:
+                print(user_vote.type)
+                user_vote = user_vote.type  # Get the vote type if user has voted
+        
             
             image_info.append({
                 'id': image.id,
@@ -21,7 +30,8 @@ def register_routes(app, db):
                 'upload_date': image.upload_date.strftime('%Y-%m-%d %H:%M:%S'),
                 'likes_count': likes_count,
                 'dislikes_count': dislikes_count,
-                'comments_count': len(image.comments)
+                'comments_count': len(image.comments),
+                'user_vote': user_vote
             })
         return render_template('index.html', images=image_info, tab_bottom=True)
     

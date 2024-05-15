@@ -1,3 +1,26 @@
+$(document).ready(function () {
+  // Function to fetch and update user's previous votes when the page loads
+  function fetchUserVotes() {
+    // Send a GET request to fetch the user's previous votes
+    $.ajax({
+      type: "GET",
+      url: "/user/votes", // Adjust the URL endpoint as per your server setup
+      success: function (response) {
+        // Loop through the response and update UI with user's previous votes
+        response.forEach(function (vote) {
+          updateResults(vote, vote.image);
+        });
+      },
+      error: function (xhr, status, error) {
+        console.error("Error fetching user votes:", error);
+      },
+    });
+  }
+
+  // Call the fetchUserVotes function when the page loads
+  fetchUserVotes();
+});
+
 function onPollVote(vote, image) {
   //handle empty input
   if (vote != "like" && vote != "dislike") {
