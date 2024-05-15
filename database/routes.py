@@ -31,7 +31,9 @@ def register_routes(app, db):
                 'likes_count': likes_count,
                 'dislikes_count': dislikes_count,
                 'comments_count': len(image.comments),
-                'user_vote': user_vote
+                'user_vote': user_vote,
+                'image_title': image.post_title,
+                'image_description': image.post_description
             })
         return render_template('index.html', images=image_info, tab_bottom=True)
     

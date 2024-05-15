@@ -12,9 +12,8 @@
             <div class="col-5">
                 <div class="card-body px-0">
                     <div class="col px-0">
-                        <h5 class="card-title" id="itemPrice">{{ pollImage.split("/")[-1].split(".")[0].title() }}</h5>
-                        <p class="card-text" id="itemDescription">Description for {{ (pollImage.split("/")[-1].split(".")[0]).title() }}
-                        from database as unzipped dict</p>
+                        <h5 class="card-title" id="itemPrice">{{ object.image_title }}</h5>
+                        <p class="card-text" id="itemDescription">{{ object.image_description }}</p>
     
                     </div>
                     <div class="row d-block w-100">
