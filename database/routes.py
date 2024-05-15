@@ -61,4 +61,4 @@ def register_routes(app, db):
             print(likes_count)
             print(dislikes_count)
             # Respond with success message or updated vote count
-            return jsonify({'message': 'Vote recorded successfully', 'likes_count': likes_count, 'dislikes_count': dislikes_count})
+            return jsonify({'message': 'Vote recorded successfully', 'likes_count': likes_count, 'dislikes_count': dislikes_count, 'vote_type': vote_type})

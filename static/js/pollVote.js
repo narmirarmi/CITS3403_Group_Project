@@ -27,4 +27,17 @@ function updateResults(data, image) {
   console.log(image);
   $("#yes-votes-" + image).text(data.likes_count);
   $("#no-votes-" + image).text(data.dislikes_count);
+  // Remove previous classes from thumbs-up and thumbs-down icons
+  $("#" + image + " .thumbs-up, #" + image + " .thumbs-down").removeClass(
+    "bi-hand-thumbs-up-fill bi-hand-thumbs-down-fill"
+  );
+
+  // Add appropriate class based on vote type
+  if (data.vote_type === "like") {
+    $("#" + image + " .bi-hand-thumbs-up").addClass("bi-hand-thumbs-up-fill");
+  } else if (data.vote_type === "dislike") {
+    $("#" + image + " .bi-hand-thumbs-down").addClass(
+      "bi-hand-thumbs-down-fill"
+    );
+  }
 }

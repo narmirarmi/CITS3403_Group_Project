@@ -28,8 +28,16 @@
                     <div class="row d-block w-100">
                         <!-- Vote count for each image -->
                         {% set imageName = pollImage.split("/")[-1] %}
-                        <p>Yes Votes: <span id="yes-votes-{{ imageName.split('.')[0] }}">{{ object.likes_count  }}</span></p>
-                        <p>No Votes: <span id="no-votes-{{ imageName.split('.')[0] }}">{{ object.dislikes_count  }}</span></p>
+                        <!-- thumbs up and thumbs down respectively -->
+                        <div class="row">
+                            <div class="col">
+                                <i class="{{ imageName.split('.')[0] }} bi-hand-thumbs-up"></i><span id="yes-votes-{{ imageName.split('.')[0] }}">{{ object.likes_count }}</span>
+                            </div>
+                            <div class="col">
+                                <i class="{{ imageName.split('.')[0] }} bi-hand-thumbs-down"></i><span id="no-votes-{{ imageName.split('.')[0] }}">{{ object.dislikes_count }}</span>
+                            </div>
+                        </div>
+                        
                     </div>
                     
                 </div>
