@@ -4,7 +4,7 @@ from flask_login import current_user
 from .models import Follow
 
 def register_routes(app, db):
-    @app.route('/', methods=['GET', 'POST'])
+    @app.route('/follow', methods=['GET', 'POST'])
     def follow():
         if request.method == 'POST':
             user_id = request.form.get('user_id')  # ID of the user to follow or unfollow
@@ -24,14 +24,14 @@ def register_routes(app, db):
             return jsonify({'message': 'Follow recorded successfully', 'follower': follower, 'following': following, 'action': action})
 
     def follow_user(current_user_id, user_id):
-        conn = sqlite3.connect('your_database.db')
+        conn = sqlite3.connect('should_i_buy_it.db')
         c = conn.cursor()
         c.execute("INSERT INTO follow (follower_id, followee_id) VALUES (?, ?)", (current_user_id, user_id))
         conn.commit()
         conn.close()
 
     def unfollow_user(current_user_id, user_id):
-        conn = sqlite3.connect('your_database.db')
+        conn = sqlite3.connect('should_i_buy_it.db')
         c = conn.cursor()
         c.execute("DELETE FROM follow WHERE follower_id = ? AND followee_id = ?", (current_user_id, user_id))
         conn.commit()
