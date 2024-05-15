@@ -28,16 +28,20 @@ function updateResults(data, image) {
   $("#yes-votes-" + image).text(data.likes_count);
   $("#no-votes-" + image).text(data.dislikes_count);
   // Remove previous classes from thumbs-up and thumbs-down icons
-  $("#" + image + " .thumbs-up, #" + image + " .thumbs-down").removeClass(
-    "bi-hand-thumbs-up-fill bi-hand-thumbs-down-fill"
-  );
+  // Remove previous fill classes from thumbs-up and thumbs-down icons
+  $("." + image + "1").removeClass("bi-hand-thumbs-up-fill");
+  $("." + image + "2").removeClass("bi-hand-thumbs-down-fill");
 
-  // Add appropriate class based on vote type
+  console.log(data.vote_type);
+  // Add appropriate fill class based on vote type
   if (data.vote_type === "like") {
-    $("#" + image + " .bi-hand-thumbs-up").addClass("bi-hand-thumbs-up-fill");
+    console.log("Tried fill");
+    $("." + image + "1").removeClass("bi-hand-thumbs-up");
+    $("." + image + "1").addClass("bi-hand-thumbs-up-fill");
+    $("." + image + "2").addClass("bi-hand-thumbs-down");
   } else if (data.vote_type === "dislike") {
-    $("#" + image + " .bi-hand-thumbs-down").addClass(
-      "bi-hand-thumbs-down-fill"
-    );
+    $("." + image + "2").removeClass("bi-hand-thumbs-down");
+    $("." + image + "2").addClass("bi-hand-thumbs-down-fill");
+    $("." + image + "1").addClass("bi-hand-thumbs-up");
   }
 }
