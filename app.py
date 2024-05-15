@@ -15,6 +15,8 @@ db.init_app(app)
 from database.routes import register_routes
 register_routes(app, db)
 
+user = None
+
 """
 # get this function to call when the session expires...
 def clear_session():
@@ -39,17 +41,6 @@ def get_image_filenames():
     return [filename for filename in os.listdir(images_dir)]
 
 image_filenames = get_image_filenames()
-
-#@app.route('/')
-def home():
-    # Retrieve poll_data from session, or initialize with zeros if it doesn't exist
-    poll_data = session.get('poll_data')
-    print(poll_data)
-    if poll_data is None:
-        poll_data = {image_name: {'yes': 0, 'no': 0} for image_name in image_filenames}
-        session['poll_data'] = poll_data
-
-    return render_template('index.html', images=image_filenames, poll_data=poll_data, tab_bottom=True)
 
 @app.route('/login')
 def login():
@@ -152,21 +143,7 @@ def users():
         user_list = User.query.all()
         users_data = [{'id': user.id, 'username': user.username, 'email': user.email} for user in user_list]
         return jsonify(users=users_data)
-    
-@app.route('/vote', methods=['POST'])
-def vote():
-    #Do not want the whole extended path
-    selected_candidate = request.form['image'].split("/")[-1]
-    yesVote = request.form['choice'] == "yes"
-    votes = session.get('poll_data')
-    if yesVote:
-        votes[selected_candidate]["yes"] += 1
-    else:
-        votes[selected_candidate]["no"] += 1
 
-    session['poll_data'] = votes
-    print(jsonify(votes))
-    return jsonify(votes)  # Respond with poll data as JSON
 
 
 

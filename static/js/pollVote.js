@@ -1,6 +1,6 @@
 function onPollVote(vote, image) {
   //handle empty input
-  if (vote != "yes" && vote != "no") {
+  if (vote != "like" && vote != "dislike") {
     console.log("Error: Empty vote invalid.");
     return;
   }
@@ -9,7 +9,7 @@ function onPollVote(vote, image) {
   $.ajax({
     type: "POST",
     url: "/vote",
-    data: { choice: vote, image: image },
+    data: { choice: vote, image: image }, // Adjusted data parameters
     success: function (response) {
       /* Updates the UI with the new votes */
       let imageName = image.split("/").pop();
@@ -24,6 +24,6 @@ function onPollVote(vote, image) {
 
 function updateResults(data, image) {
   console.log(image);
-  $("#yes-votes-" + image).text(data[image].yes);
-  $("#no-votes-" + image).text(data[image].no);
+  $("#yes-votes-" + image).text(data.likes_count);
+  $("#no-votes-" + image).text(data.dislikes_count);
 }
