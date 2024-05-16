@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
 
@@ -11,11 +12,16 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     profile_picture = db.Column(db.String(255))
 
+    session = db.relationship('Session', backref='user', lazy=True)
     images = db.relationship('Image', backref='user', lazy=True)
     votes = db.relationship('Vote', backref='user', lazy=True)
     comments = db.relationship('Comment', backref='user', lazy=True)
     followers = db.relationship('Follow', foreign_keys='Follow.follower_id', backref='follower', lazy=True)
-    followees = db.relationship('Follow', foreign_keys='Follow.followee_id', backref='followee', lazy=True)
+
+    def set_password(self, secret):
+        self.password = generate_password_hash(secret)
+    def check_password(self, secret):
+        return check_password_hash(self.password, secret)
 
 # images table metadata
 class Image(db.Model):
@@ -49,3 +55,9 @@ class Follow(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     follower_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     followee_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+# store session data
+class Session(db.Model):
+    id = db.Column(db.String(255), primary_key=True)
+    session_time = db.Column(db.String(255), default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

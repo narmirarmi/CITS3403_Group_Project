@@ -3,6 +3,7 @@ import random
 from datetime import datetime, timedelta
 import sys
 import os
+from werkzeug.security import generate_password_hash
 
 # Get the current directory of this script
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -14,7 +15,6 @@ from app import app
 
 
 # Don't change the seed please
-# I can do whatever I liiiiiikeeee
 SEED = 4321
 fake = Faker()
 Faker.seed(SEED)
@@ -26,8 +26,8 @@ def create_users(n):
     emails = {}
     for _ in range(n):
         username = fake.user_name()
-        email = fake.email()    # this is causing an error its making duplicate emails fuuuukkk my liiiife -Max
-        password = fake.password(length=12)
+        email = fake.email()
+        password = hash_password(fake.password(length=12))
         profile_picture = fake.image_url()
         user = User(username=username, email=email, password=password, profile_picture=profile_picture)
         users.append(user)
@@ -103,9 +103,21 @@ def add_dummy_data():
     # Generate Follows
     create_follows(users)
 
+def hash_password(password):
+    bytes = password.encode('utf-8')
+    password_hash = generate_password_hash(password, method="pbkdf2:md5")
+    return password_hash
+
+def reset_db():
+    with app.app_context():
+        print("Resetting database...")
+        db.drop_all()
+
 # main function call
 if __name__ == '__main__':
     with app.app_context():
+        db.init_app(app)
+        reset_db()
         db.create_all()  # Ensure that all tables are created
         add_dummy_data()
         print("Dummy data has been added to the database.")
