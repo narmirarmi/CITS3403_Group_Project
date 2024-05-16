@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, jsonify, session
+from flask_cors import CORS
 import os
-from database import query_database, create_database_from_sql
+from database import routes
 
 
 app = Flask(__name__)
+CORS(app)
 app.secret_key = "secret_key"
 
 
@@ -21,40 +23,34 @@ def home():
     if poll_data is None:
         poll_data = {image_name: {'yes': 0, 'no': 0} for image_name in image_filenames}
         session['poll_data'] = poll_data
-    
+
     return render_template('index.html', images=image_filenames, poll_data=poll_data)
 
 
-@app.route('/vote', methods=['POST'])
-def vote():
-    # Receive form data
-    choice = request.form['choice']
-    name = request.form['image']
-    print(name)
-    
-    # Retrieve poll_data from session
-    poll_data = session.get('poll_data', {})
-    
-    # Update poll_data
-    if choice == "yes":
-        poll_data[name]['yes'] += 1
-    elif choice == "no":
-        poll_data[name]['no'] += 1
-    
-    # Store updated poll_data back in session
-    session['poll_data'] = poll_data
-    
-    # Return a response (e.g., indicating success)
-    return home()
 
-@app.route('/profile')
-def profile():
-    # Your profile route logic here
-    return render_template('profile.html')
+@app.route('/register', methods=['POST'])
+def register():
+    # Access the form data sent with the request
+    name = request.form.get('name')
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
 
-if __name__ == '__main__':
-    # Example usage:
-    create_database_from_sql('database\create_database.sql')
-    query_database("select * from users")
+    # add validation here
 
+    # add processing to initialise a new user here, e.g. database entry, etc.
+
+
+    # Print received data
+    print("Registration data received:")
+    print(f"Name: {name}")
+    print(f"Username: {username}")
+    print(f"Email: {email}")
+    print(f"Password: {password}")
+
+    # Temporarily, return a simple response
+    return jsonify(message="Registration data received"), 200
+
+
+if __name__ == "__main__":
     app.run(debug=True)
