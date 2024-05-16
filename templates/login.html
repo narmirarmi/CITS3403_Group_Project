@@ -2,48 +2,39 @@
 
 {% block title %} Login {% endblock %}
 {% block content %}
-     <div class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-100">
-        <!-- Separate container for the Pills navs -->
-        <div class="mb-5">
-            <!-- Pills navs -->
-            <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link active" id="tab-login" data-mdb-pill-init href="#pills-login" role="tab"
-                        aria-controls="pills-login" aria-selected="true">Login</a>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="tab-register" data-mdb-pill-init href="#pills-register" role="tab"
-                        aria-controls="pills-register" aria-selected="false">Register</a>
-                </li>
-            </ul>
-            <!-- Pills navs -->
-        </div>
+
+    <!-- This was changed to be a flex container but that was breaking the beautiful formatting -->
+<div class="login-page">
+    <!-- Separate container for the Pills navs -->
+    <div class="mb-5">
+        <!-- Pills navs -->
+        <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="tab-login" data-mdb-pill-init href="#pills-login" role="tab"
+                    aria-controls="pills-login" aria-selected="true">Login</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="tab-register" data-mdb-pill-init href="#pills-register" role="tab"
+                    aria-controls="pills-register" aria-selected="false">Register</a>
+            </li>
+        </ul>
+        <!-- Pills navs -->
+    </div>
 
     <!-- Pills content -->
-    <div class="tab-content flex-grow-1">
+    <div class="tab-content">
         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
             <form id = "loginForm">
-                <div class="text-center mb-3">
-                    <p>Sign in with:</p>
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
 
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-google"></i>
-                    </button>
+                <!-- Reusable Icon Buttons for logging in-->
+                <div class="row w-100 justify-text-center mb-3">
+                    <!-- Load logos with reusable button format -->
+                    {% for icon in ["fa-facebook-f", "fa-google", "fa-twitter", "fa-github"] %}
+                        {% with logo = icon %}
+                            {% include "login/LoginIcon.html" %}
+                        {% endwith %}
+                    {% endfor %}
 
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-twitter"></i>
-                    </button>
-
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-github"></i>
-                    </button>
                 </div>
 
                 <p class="text-center">or:</p>
@@ -51,7 +42,7 @@
                 <!-- Email input -->
                 <div data-mdb-input-init class="form-outline mb-4">
                     <input type="email" id="loginName" class="form-control" />
-                    <label class="form-label" for="loginName">Email or username</label>
+                    <label class="form-label" for="loginName">Email</label>
                 </div>
 
                 <!-- Password input -->
@@ -83,27 +74,14 @@
         </div>
         <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
             <form id = "registrationForm">
-                <div class="text-center mb-3">
-                    <p>Sign up with:</p>
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
+                <div class="row w-100 justify-text-center mb-3">
 
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-google"></i>
-                    </button>
+                    {% for icon in ["fa-facebook-f", "fa-google", "fa-twitter", "fa-github"] %}
+                        {% with logo = icon %}
+                            {% include "login/LoginIcon.html" %}
+                        {% endwith %}
+                    {% endfor %}
 
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-twitter"></i>
-                    </button>
-
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-link btn-floating mx-1">
-                        <i class="fab fa-github"></i>
-                    </button>
                 </div>
 
                 <p class="text-center">or:</p>
@@ -155,5 +133,11 @@
     </div>
     <!-- Pills content -->
 </div>
+
+    <!-- Login and Registration Scripts-->
+<script src="/static/js/loginUser.js"></script>
+<script src="/static/js/registerUser.js"></script>
 {% endblock %}
+
+
 

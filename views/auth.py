@@ -29,48 +29,42 @@ def validateLogin():
     login_mode = 0  # check if user submitted an email or a username
 
     #access form data
-    user = request.form.get('username')
+    email = request.form.get('email')
     password = request.form.get('password')
 
     errors = []
-    if not user:
-        errors.append('Username / Email is required.')
+    if not email:
+        errors.append('Email is required')
     if not password:
-        errors.append('Password is required.')
+        errors.append('Password is required')
 
     # flip login_mode to 1 if email was passed instead of name
-    if user and re.match(r"[^@]+@[^@]+\.[^@]+", user):
-        login_mode = 1
+    if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        errors.append('Invalid Email')
 
-    # check password against email if login_mode is 1
-    if login_mode == 1:
-        if user and not User.query.filter_by(email=user).first():
-            errors.append('Email not found')
+    if email and not User.query.filter_by(email=email).first():
+        errors.append('Email not found')
 
-    # check password against username if login_mode is 0
-    elif login_mode == 0:
-        if user and not User.query.filter_by(username=user).first():
-            errors.append('Username not found')
-
-    isPasswordValid = check_password(password, User.query.filter_by(username=user).first().password)
+    isPasswordValid = check_password(password, User.query.filter_by(email=email).first().password)
     if not isPasswordValid:
         errors.append('Incorrect password')
 
     if len(errors) != 0:
         return jsonify({"errors": errors}), 400
 
+    user = User.query.filter_by(email=email).first()
     # SESSION ID HANDLING
     new_session = Session(
         id=generate_session_token(),
         session_time=datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"),
-        user_id=User.query.filter_by(username=user).first().id,
+        user_id=user.id
         )
     db.session.add(new_session)
     db.session.commit()
     print("Wrote new session ID ", new_session.id)
     # END SESSION ID HANDLING
 
-    return jsonify(message="Successfully logged in as {}".format(user), session_token=new_session.id), 200
+    return jsonify(message="Successfully logged in as {}".format(user.username), session_token=new_session.id), 200
 
 @auth.route('/register', methods=['POST'])
 def register():

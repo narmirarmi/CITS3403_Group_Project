@@ -3,12 +3,12 @@ $(document).ready(function() {
         event.preventDefault(); // Prevent the default form submission
 
         var formData = {
-            username: $('#loginName').val(),
+            email: $('#loginName').val(),
             password: $('#loginPassword').val(),
         };
 
-        if (!formData.username || !formData.password) {
-            alert('Please enter a username/email and password');
+        if (!formData.email || !formData.password) {
+            alert('Please enter an email and password');
             return; // Stop the function if validation fails
         }
 
