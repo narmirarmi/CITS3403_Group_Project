@@ -5,9 +5,9 @@
 <div class="images-grid">
     <div class="container-fluid">
         <div class="row" id="image-row">
-            {% for name in images %}
+            {% for object in images %}
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    {% with pollImage = "static/images/" + name, poll_data=poll_data %}
+                    {% with pollImage = "static/images/" + object.image_path%}
                         {% include "poll/PollWidget.html" %}
                     {% endwith %}
                 </div>
