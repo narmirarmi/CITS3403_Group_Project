@@ -10,3 +10,4 @@ dist/
 venv/*
 .idea/
 .gitignore
+__pychache__/*
