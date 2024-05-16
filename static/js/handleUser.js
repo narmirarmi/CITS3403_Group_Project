@@ -1,4 +1,40 @@
 $(document).ready(function() {
+
+    // login handling
+    $('#loginForm').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        var formData = {
+            email: $('#loginName').val(),
+            password: $('#loginPassword').val(),
+        };
+
+        if (!formData.email || !formData.password) {
+            alert('Please enter an email and password');
+            return; // Stop the function if validation fails
+        }
+
+        // Send the data using AJAX
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:5000/auth/login',
+            data: formData,
+            success: function(response) {
+                // Handle success
+                console.log('Login successful', response.message);
+                alert('Login successful: \n' + response.message + '\n' + response.session_token);
+                localStorage.setItem("should_i_buy_it.current_session", response.session_token)
+                console.log("Successfully wrote session token")
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+                console.log('Login error', error);
+                alert('Login failed: ' + error);
+            }
+        });
+    });
+
+    //registration handling
     $('#registrationForm').submit(function(event) {
         event.preventDefault(); // Prevent the default form submission
 
@@ -33,4 +69,6 @@ $(document).ready(function() {
             }
         });
     });
+
+
 });

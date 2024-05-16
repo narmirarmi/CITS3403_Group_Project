@@ -6,9 +6,10 @@
 
 # begin declarations
 
-import functools
 import re
 from sqlalchemy.exc import IntegrityError
+
+import blueprints
 from database.models import db, User, Session
 
 from flask import (
@@ -20,7 +21,22 @@ auth = Blueprint('auth', __name__, url_prefix='/auth')
 # end declarations
 
 import werkzeug.security as wz
-from datetime import datetime
+from datetime import datetime, timedelta
+
+# Check the status of the user, i.e. are the currently logged in during their session
+@auth.route('/', methods=['POST'])
+def check_token():
+
+    session_token = request.form.get('session_token')
+    session = validate_session_token(session_token)
+
+    if session is not None:
+
+        user = User.query.get(session.user_id)
+        return jsonify(message="Token Received", user=user.username), 200
+
+    return jsonify(message="Invalid Token"), 400
+
 
 @auth.route('/login', methods=['POST'])
 def validateLogin():
@@ -52,15 +68,16 @@ def validateLogin():
     if len(errors) != 0:
         return jsonify({"errors": errors}), 400
 
-    user = User.query.filter_by(email=email).first()
     # SESSION ID HANDLING
-    new_session = Session(
-        id=generate_session_token(),
-        session_time=datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"),
-        user_id=user.id
-        )
+    user = User.query.filter_by(email=email).first()
+
+    for user_sesh in Session.query.filter_by(user_id=user.id):
+        db.session.delete(user_sesh)
+
+    new_session = generate_session(user)
     db.session.add(new_session)
     db.session.commit()
+
     print("Wrote new session ID ", new_session.id)
     # END SESSION ID HANDLING
 
@@ -118,7 +135,6 @@ def register():
 
 # hash a password
 def hash_password(password):
-    bytes = password.encode('utf-8')
     password_hash = wz.generate_password_hash(password, method="pbkdf2:md5")
     return password_hash
 
@@ -128,12 +144,29 @@ def check_password(attempt, password):
     return result
 
 # generate new session token based on the current time
-def generate_session_token():
+def generate_session(user):
     session_hash = wz.generate_password_hash(datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"))
-    return session_hash
+
+    new_session = Session(
+        id=session_hash,
+        session_time=datetime.utcnow().strftime("%m/%d/%Y, %H:%M:%S"),
+        user_id=user.id
+    )
+    return new_session
 
 # check if a session token is valid
-def check_session_token(attempt, session_token):
-    attemptBytes = attempt.encode('utf-8')
-    result = wz.check_password_hash().checkpw(attemptBytes, session_token)
-    return result
+def validate_session_token(session_token):
+
+    user_session = Session.query.get(session_token)
+
+    if user_session:
+        # check four hours ago
+        if datetime.strptime(user_session.session_time,"%m/%d/%Y, %H:%M:%S") > datetime.utcnow() - timedelta(hours=current_app.config['SESSION_EXPIRY']):
+            return Session.query.get(session_token)
+        # if user session has expired, delete it from the table
+        else:
+            db.session.delete(user_session)
+            db.session.commit()
+            return None
+
+    return None

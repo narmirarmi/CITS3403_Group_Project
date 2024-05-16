@@ -5,5 +5,8 @@ class Config(object):
 	UPLOAD_FOLDER =	"static\images"
 	IMAGE_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+	# session expiry timer (in hours)
+	SESSION_EXPIRY = 18
+
 class InitialisingConfig(Config):
 	RELOAD_DB = True

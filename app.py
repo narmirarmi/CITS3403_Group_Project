@@ -21,9 +21,11 @@ def create_app(config_filename):
     from database.models import db
     db.init_app(app)
 
-    #import views here
-    from views.auth import auth
+    #load blueprints
+    from blueprints.auth import auth
+    from blueprints.user import user
     app.register_blueprint(auth)
+    app.register_blueprint(user)
 
     return app
 
@@ -99,14 +101,6 @@ def addListing():
     else:
         # Render the form template for GET requests
         return render_template('addListing.html', endpoint='addListing')
-
-@app.route('/users')
-def users():
-    with app.app_context():
-        # Retrieve all users from the database
-        user_list = User.query.all()
-        users_data = [{'id': user.id, 'username': user.username, 'email': user.email} for user in user_list]
-        return jsonify(users=users_data)
     
 @app.route('/vote', methods=['POST'])
 def vote():
@@ -122,8 +116,6 @@ def vote():
     session['poll_data'] = votes
     print(jsonify(votes))
     return jsonify(votes)  # Respond with poll data as JSON
-
-
 
 if __name__ == "__main__":
     # load from main.cfg
