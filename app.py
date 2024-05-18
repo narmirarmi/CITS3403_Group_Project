@@ -1,56 +1,50 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 from flask_cors import CORS
-import os
-from database import routes
+from database.models import db, Vote, Follow, Comment, User, Image
+from database.routes import register_routes
+from flask_login import LoginManager
 
 
 app = Flask(__name__)
-CORS(app)
-app.secret_key = "secret_key"
+app.config.from_object('config.Config')
+login_manager = LoginManager()
+login_manager.init_app(app)
 
+# Function to load a user
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
-def get_image_filenames():
-    images_dir = os.path.join(app.static_folder, 'images')
-    return [filename for filename in os.listdir(images_dir)]
+def create_app(config_filename):
 
-@app.route('/')
-def home():
-    # Example image data (replace with your actual image data)
-    image_filenames = get_image_filenames()
+    #init app details
+    app.config.from_object(config_filename)
+    CORS(app)
+    app.secret_key = app.config['SECRET_KEY']
 
-    # Retrieve poll_data from session, or initialize with zeros if it doesn't exist
-    poll_data = session.get('poll_data')
-    if poll_data is None:
-        poll_data = {image_name: {'yes': 0, 'no': 0} for image_name in image_filenames}
-        session['poll_data'] = poll_data
+    # init database
+    from database.models import db
+    db.init_app(app)
 
-    return render_template('index.html', images=image_filenames, poll_data=poll_data)
+    #load blueprints
+    from blueprints.auth import auth
+    from blueprints.user import user
+    app.register_blueprint(auth)
+    app.register_blueprint(user)
 
+    return app
 
+register_routes(app, db)
 
-@app.route('/register', methods=['POST'])
-def register():
-    # Access the form data sent with the request
-    name = request.form.get('name')
-    username = request.form.get('username')
-    email = request.form.get('email')
-    password = request.form.get('password')
-
-    # add validation here
-
-    # add processing to initialise a new user here, e.g. database entry, etc.
-
-
-    # Print received data
-    print("Registration data received:")
-    print(f"Name: {name}")
-    print(f"Username: {username}")
-    print(f"Email: {email}")
-    print(f"Password: {password}")
-
-    # Temporarily, return a simple response
-    return jsonify(message="Registration data received"), 200
+# Register the filter using a decorator
+@app.template_filter('underscore_to_space')
+def underscore_to_space_filter(s):
+    return s.replace('_', ' ')
 
 
 if __name__ == "__main__":
+    # load from main.cfg
+    app = create_app('config.Config')
+
+    #run the application
     app.run(debug=True)

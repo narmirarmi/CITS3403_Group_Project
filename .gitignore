@@ -1,0 +1,13 @@
+### Flask template
+instance/*
+!instance/.gitignore
+.webassets-cache
+.env
+*.pyc
+*.pyo
+build/
+dist/
+venv/*
+.idea/
+.gitignore
+__pychache__/*

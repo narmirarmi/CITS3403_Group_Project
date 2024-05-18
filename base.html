@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- We put in the specific endpoint as the title here -->
+    <title>{% block title %} Product Polling {% endblock %} | Should I Buy It?</title>
+    <!-- All the header imports are standardized -->
+    {% include "resources/head.html" %}
+    <!-- Viewport Meta Tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <!-- This is the sticky header bar, that every page has -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">Should I Buy It?</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
+                                class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <!-- SVG paths -->
+                            </svg>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Account</a></li>
+                            <li><a class="dropdown-item" href="#">Settings</a></li>
+                            <li><a class="dropdown-item" href="#">Log Out</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% if banner_message %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ banner_message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <!-- This block is where we render page specific content within -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- Bottom Navigation -->
+    {% if tab_bottom %}
+    <div class="bottom-navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col d-flex justify-content-center align-items-center px-0">
+                    <a href="index.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                            class="bi bi-house" viewBox="0 0 16 16">
+                            <!-- SVG paths -->
+                        </svg>
+                    </a>
+                </div>
+                <div class="col d-flex justify-content-center align-items-center px-0">
+                    <a href="profile.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                            class="bi bi-person" viewBox="0 0 16 16">
+                            <!-- SVG paths -->
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- To add the in DOM requirements / js bootstrap libraries -->
+    {% include "resources/foot.html" %}
+</body>
+
+</html>

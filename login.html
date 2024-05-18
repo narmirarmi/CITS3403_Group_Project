@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 
 {% block title %} Login {% endblock %}
-{% block content %}
 
-    <!-- This was changed to be a flex container but that was breaking the beautiful formatting -->
-<div class="login-page">
+{% block content %}
+<div class="container-fluid d-flex flex-column justify-content-center align-items-center min-vh-100">
     <!-- Separate container for the Pills navs -->
     <div class="mb-5">
         <!-- Pills navs -->
@@ -24,101 +23,88 @@
     <!-- Pills content -->
     <div class="tab-content">
         <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-            <form id = "loginForm">
-
-                <!-- Reusable Icon Buttons for logging in-->
-                <div class="row w-100 justify-text-center mb-3">
-                    <!-- Load logos with reusable button format -->
+            <form id="loginForm">
+                <!-- Load logos with reusable button format -->
+                <div class="row w-100 justify-content-center mb-3">
                     {% for icon in ["fa-facebook-f", "fa-google", "fa-twitter", "fa-github"] %}
-                        {% with logo = icon %}
-                            {% include "login/LoginIcon.html" %}
+                    <div class="col-auto">
+                        {% with logo=icon %}
+                        {% include "login/LoginIcon.html" %}
                         {% endwith %}
+                    </div>
                     {% endfor %}
-
                 </div>
-
-                <p class="text-center">or:</p>
 
                 <!-- Email input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="email" id="loginName" class="form-control" />
-                    <label class="form-label" for="loginName">Email</label>
+                    <label class="form-label" for="loginName">Email or username</label>
+                    <input type="text" id="loginName" class="form-control" placeholder="Email or Username..." />
                 </div>
 
                 <!-- Password input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" id="loginPassword" class="form-control" />
                     <label class="form-label" for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="Password..." />
                 </div>
 
-                <!-- 2 column grid layout -->
-                <div class="row mb-4">
-                    <div class="col-md-6 d-flex justify-content-center">
-                        <!-- Checkbox -->
-                        <div class="form-check mb-3 mb-md-0">
-                            <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
-                            <label class="form-check-label" for="loginCheck"> Remember me </label>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 d-flex justify-content-center">
-                        <!-- Simple link -->
-                        <a href="#!">Forgot password?</a>
-                    </div>
+                <!-- Checkbox -->
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />
+                    <label class="form-check-label" for="loginCheck"> Remember me </label>
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                    class="btn btn-primary btn-block mb-4">Sign in</button>
+                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block">Sign
+                    in</button>
             </form>
         </div>
         <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-            <form id = "registrationForm">
-                <div class="row w-100 justify-text-center mb-3">
-
+            <form id="registrationForm">
+                <div class="row w-100 text-center mb-3">
+                    <p>Sign up with:</p>
+                    <!-- Load logos with reusable button format -->
                     {% for icon in ["fa-facebook-f", "fa-google", "fa-twitter", "fa-github"] %}
-                        {% with logo = icon %}
-                            {% include "login/LoginIcon.html" %}
+                    <div class="col-auto">
+                        {% with logo=icon %}
+                        {% include "login/LoginIcon.html" %}
                         {% endwith %}
+                    </div>
                     {% endfor %}
-
                 </div>
-
-                <p class="text-center">or:</p>
 
                 <!-- Name input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="text" id="registerName" class="form-control" />
                     <label class="form-label" for="registerName">Name</label>
+                    <input type="text" id="registerName" class="form-control" />
                 </div>
 
                 <!-- Username input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="text" id="registerUsername" class="form-control" />
                     <label class="form-label" for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername" class="form-control" />
                 </div>
 
                 <!-- Email input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="email" id="registerEmail" class="form-control" />
                     <label class="form-label" for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail" class="form-control" />
                 </div>
 
                 <!-- Password input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" id="registerPassword" class="form-control" />
                     <label class="form-label" for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" class="form-control" />
                 </div>
 
                 <!-- Repeat Password input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" id="registerRepeatPassword" class="form-control" />
                     <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+                    <input type="password" id="registerRepeatPassword" class="form-control" />
                 </div>
 
                 <!-- Checkbox -->
-                <div class="form-check d-flex justify-content-center mb-4">
-                    <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
+                <div class="form-check mb-4">
+                    <input class="form-check-input" type="checkbox" value="" id="registerCheck" checked
                         aria-describedby="registerCheckHelpText" />
                     <label class="form-check-label" for="registerCheck">
                         I have read and agree to the <a href="#">terms and conditions</a>
@@ -126,17 +112,14 @@
                 </div>
 
                 <!-- Submit button -->
-                <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                    class="btn btn-primary btn-block mb-3">Sign Up</button>
+                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block">
+                    Sign Up</button>
             </form>
         </div>
     </div>
-    <!-- Pills content -->
 </div>
 
-    <!-- Login and Registration Scripts-->
-<script src="/static/js/handleUser.js"></script>
 {% endblock %}
 
-
-
+<!-- Login and Registration Scripts -->
+<script src="static/js/handleUser.js"></script>
