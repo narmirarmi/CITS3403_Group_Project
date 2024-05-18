@@ -15,6 +15,8 @@ from database.models import db, User, Session
 from flask import (
     current_app, Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
 )
+from flask_login import current_user
+
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -78,10 +80,12 @@ def validateLogin():
     db.session.add(new_session)
     db.session.commit()
 
+    current_user.id = user.id
+
     print("Wrote new session ID ", new_session.id)
     # END SESSION ID HANDLING
 
-    return jsonify(message="Successfully logged in as {}".format(user.username), session_token=new_session.id), 200
+    return redirect(url_for('index'))
 
 @auth.route('/register', methods=['POST'])
 def register():
@@ -98,10 +102,6 @@ def register():
         errors.append('Name is required.')
     if not username:
         errors.append('Username is required.')
-    if not email:
-        errors.append('Email is required.')
-    if not password:
-        errors.append('Password is required.')
 
     if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
         errors.append('Invalid email format.')
@@ -112,11 +112,10 @@ def register():
     # Check for duplicate username / email addresses
     if username and User.query.filter_by(username=username).first():
         errors.append('Username is already taken.')
-    ## TEMPORARILY COMMENTED OUT AS SEED WAS GIVING DUPLICATE
-    """
-    #if email and User.query.filter_by(email=email).first():
-    #    errors.append('Email is already in use.')
-    """
+
+    if email and User.query.filter_by(email=email).first():
+        errors.append('Email is already in use.')
+
 
     if errors:
         return jsonify({"errors": errors}), 400

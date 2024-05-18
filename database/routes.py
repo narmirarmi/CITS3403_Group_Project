@@ -1,8 +1,10 @@
 import sqlite3
-from flask import jsonify, render_template, request, redirect, url_for, flash
-from flask_login import current_user
-from .models import Follow, Image, Vote
+from flask import jsonify, render_template, request
+from flask_login import current_user, login_required, LoginManager
+from .models import Follow, Image, Vote, User
+from sqlalchemy.exc import IntegrityError
 import os
+import re
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
@@ -38,7 +40,10 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ['jpg', 'jpeg', 'png', 'gif']
 
 def register_routes(app, db):
+
     @app.route('/')
+    @app.route('/index')
+    #@login_required
     def index():
 
         images = Image.query.all()
@@ -49,7 +54,7 @@ def register_routes(app, db):
             user_vote = None  # Default to None if user hasn't voted
             #if current_user.is_authenticated:  # Check if user is authenticated 
             #replace with the current_user
-            user_vote = Vote.query.filter_by(image_id=image.id, user_id=2).first()
+            user_vote = Vote.query.filter_by(image_id=image.id, user_id=current_user.id).first()
             if user_vote:
                 print(user_vote.type)
                 user_vote = user_vote.type  # Get the vote type if user has voted
@@ -67,12 +72,14 @@ def register_routes(app, db):
                 'image_title': image.post_title,
                 'image_description': image.post_description
             })
+        print("Current user", current_user.username)
         return render_template('index.html', images=image_info, tab_bottom=True)
     
     @app.route('/vote', methods=['POST'])
+    @login_required
     def vote():
             selected_image = request.form['image']
-            user_id = 1#current_user.get_id() # THIS NEEDS IS FROM THE SESSION
+            user_id = current_user.id
             vote_type = request.form['choice']
 
             #This is the case where they are not logged in
@@ -107,6 +114,7 @@ def register_routes(app, db):
             # Respond with success message or updated vote count
             return jsonify({'message': 'Vote recorded successfully', 'likes_count': likes_count, 'dislikes_count': dislikes_count, 'vote_type': vote_type})
     @app.route('/follow', methods=['GET', 'POST'])
+    @login_required
     def follow():
         if request.method == 'POST':
             user_id = request.form.get('user_id')  # ID of the user to follow or unfollow
@@ -126,6 +134,7 @@ def register_routes(app, db):
             return jsonify({'message': 'Follow recorded successfully', 'follower': follower, 'following': following, 'action': action})
     
     @app.route('/post', methods=['POST'])
+    @login_required
     def addListing():
         if request.method == 'POST':
             title = request.form['title']
@@ -152,4 +161,58 @@ def register_routes(app, db):
                 return render_template('index.html', images=image_info, tab_bottom=True, banner_message=f"Listing {title} added successfully!")
             else:
                 return "File type not allowed"
-        
+            
+    @app.route('/login')
+    def login():
+        return render_template('login.html')
+
+
+    @app.route('/register', methods=['POST'])
+    def register():
+        # Access the form data sent with the request
+        name = request.form.get('name')
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        errors = []
+
+        # Check required fields
+        if not name:
+            errors.append('Name is required.')
+        if not username:
+            errors.append('Username is required.')
+        if not email:
+            errors.append('Email is required.')
+        if not password:
+            errors.append('Password is required.')
+
+        if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            errors.append('Invalid email format.')
+
+        if password and len(password) < 8:
+            errors.append('Password must be at least 8 characters long.')
+
+        # Check for duplicate username / email addresses
+        if username and User.query.filter_by(username=username).first():
+            errors.append('Username is already taken.')
+        ## TEMPORARILY COMMENTED OUT AS SEED WAS GIVING DUPLICATE
+        """
+        #if email and User.query.filter_by(email=email).first():
+        #    errors.append('Email is already in use.')
+        """
+
+        if errors:
+            return jsonify({"errors": errors}), 400
+
+        # Otherwise, create a new user
+        new_user = User(username=username, email=email, password=password)
+        db.session.add(new_user)
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify(message="Registration failed due to a database error."), 500
+
+        print(f"new user: {new_user.username}")
+        return jsonify(message="Registration successful!"), 201
