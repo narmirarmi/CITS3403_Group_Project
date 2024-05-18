@@ -22,9 +22,10 @@ $(document).ready(function() {
             success: function(response) {
                 // Handle success
                 console.log('Login successful', response.message);
-                alert('Login successful: \n' + response.message + '\n' + response.session_token);
-                localStorage.setItem("should_i_buy_it.current_session", response.session_token)
-                console.log("Successfully wrote session token")
+                localStorage.setItem("should_i_buy_it.current_session", response.session_token);
+                console.log("Successfully wrote session token");
+                window.location.replace('../')
+
             },
             error: function(xhr, status, error) {
                 // Handle errors
