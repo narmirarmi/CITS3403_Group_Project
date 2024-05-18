@@ -142,9 +142,7 @@ def register_routes(app, db):
             # Check if file has an allowed extension
             if image and allowed_file(image.filename):
                 # Saves to the images file, and prevent SQL injection and other attacks of that type
-                filename = secure_filename(title)
-                extension = image.filename.split(".")[-1]
-                filename = filename + "."+extension
+                filename = secure_filename(image.filename)
                 image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 current_user = 1
                 # Update poll_data with the new item initialized to 0 counts

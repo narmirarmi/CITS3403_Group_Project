@@ -5,6 +5,38 @@
 <div class="images-grid">
     <div class="container-fluid">
         <div class="row" id="image-row">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addListingModal">
+                Add New Listing
+              </button>
+
+              <div class="modal fade" id="addListingModal" tabindex="-1" aria-labelledby="addListingModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-custom">
+                    <div class="modal-content modal-content-custom">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addListingModalLabel">Add a New Listing</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addListingForm" method="POST" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Select Image</label>
+                                    <input type="file" class="form-control" id="image" name="image" accept=".png, .jpg, .jpeg, .gif" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Upload</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {% for object in images %}
                 <div class="col-lg-4 col-md-6 col-sm-12">
                     {% with pollImage = "static/images/" + object.image_path%}
@@ -14,5 +46,5 @@
             {% endfor %}
         </div>
     </div>
-</div>
+</div>  
 {% endblock %}
