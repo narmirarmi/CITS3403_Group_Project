@@ -31,8 +31,8 @@ def create_app(config_filename):
     db.init_app(app)
 
     #load blueprints
-    from blueprints.auth import auth
-    from blueprints.user import user
+    from auth.auth import auth
+    from user.user import user
     app.register_blueprint(auth)
     app.register_blueprint(user)
 
