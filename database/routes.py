@@ -6,6 +6,9 @@ import os
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
+#Needs to be globally accessible
+image_info = []
+
 def follow_user(current_user_id, user_id):
     conn = sqlite3.connect('should_i_buy_it.db')
     c = conn.cursor()
@@ -37,11 +40,8 @@ def allowed_file(filename):
 def register_routes(app, db):
     @app.route('/')
     def index():
-        banner_message = flash('success')
-        print(banner_message)
 
         images = Image.query.all()
-        image_info = []  # List to store information about each image
         for image in images:
             likes_count = Vote.query.filter_by(image_id=image.id, type='like').count()
             dislikes_count = Vote.query.filter_by(image_id=image.id, type='dislike').count()
@@ -67,7 +67,7 @@ def register_routes(app, db):
                 'image_title': image.post_title,
                 'image_description': image.post_description
             })
-        return render_template('index.html', images=image_info, tab_bottom=True, banner_message=banner_message)
+        return render_template('index.html', images=image_info, tab_bottom=True)
     
     @app.route('/vote', methods=['POST'])
     def vote():
@@ -125,7 +125,7 @@ def register_routes(app, db):
 
             return jsonify({'message': 'Follow recorded successfully', 'follower': follower, 'following': following, 'action': action})
     
-    @app.route('/post', methods=['GET', 'POST'])
+    @app.route('/post', methods=['POST'])
     def addListing():
         if request.method == 'POST':
             title = request.form['title']
@@ -149,13 +149,7 @@ def register_routes(app, db):
                 new_image = Image(user_id=current_user, image_path=filename, post_title=title, post_description=description, upload_date=datetime.utcnow())
                 db.session.add(new_image)
                 db.session.commit()
-                flash('Listing added successfully', 'success')
-                return redirect(url_for('index'))
+                return render_template('index.html', images=image_info, tab_bottom=True, banner_message=f"Listing {title} added successfully!")
             else:
                 return "File type not allowed"
-
-        else:
-            # Render the form template for GET requests
-            return render_template('addListing.html', endpoint='addListing')
-        
         

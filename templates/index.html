@@ -5,7 +5,7 @@
 <div class="images-grid">
     <div class="container-fluid">
         <div class="row" id="image-row">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addListingModal">
+            <button type="button" class="btn btn-primary btn-small" data-bs-toggle="modal" data-bs-target="#addListingModal">
                 Add New Listing
               </button>
 
@@ -17,7 +17,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="addListingForm" method="POST" enctype="multipart/form-data">
+                            <form id="addListingForm" method="POST" action="{{ url_for('addListing') }}" enctype="multipart/form-data">
                                 <div class="mb-3">
                                     <label for="title" class="form-label">Title</label>
                                     <input type="text" class="form-control" id="title" name="title" required>
