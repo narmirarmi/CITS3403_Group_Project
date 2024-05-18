@@ -15,7 +15,7 @@ from database.models import db, User, Session
 from flask import (
     current_app, Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
 )
-from flask_login import current_user
+from flask_login import login_user
 
 
 auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -44,7 +44,6 @@ def check_token():
 def validateLogin():
 
     print('endpoint LOGIN_USER reached')
-    login_mode = 0  # check if user submitted an email or a username
 
     #access form data
     email = request.form.get('email')
@@ -60,30 +59,34 @@ def validateLogin():
     if email and not re.match(r"[^@]+@[^@]+\.[^@]+", email):
         errors.append('Invalid Email')
 
-    if email and not User.query.filter_by(email=email).first():
-        errors.append('Email not found')
-
-    isPasswordValid = check_password(password, User.query.filter_by(email=email).first().password)
-    if not isPasswordValid:
-        errors.append('Incorrect password')
-
-    if len(errors) != 0:
+    if errors:
         return jsonify({"errors": errors}), 400
 
-    # SESSION ID HANDLING
+
+
+        # Check if user exists
     user = User.query.filter_by(email=email).first()
+    if not user:
+        errors.append('User not found')
+
+    # Check if password is correct
+    if user and not check_password(password, user.password):
+        errors.append('Incorrect password')
 
     for user_sesh in Session.query.filter_by(user_id=user.id):
         db.session.delete(user_sesh)
+
+    login_user(user)
 
     new_session = generate_session(user)
     db.session.add(new_session)
     db.session.commit()
 
-    current_user.id = user.id
-
     print("Wrote new session ID ", new_session.id)
-    # END SESSION ID HANDLING
+    # END SESSION ID HANDLING]
+
+    #user = <user12>
+    print(user)
 
     return redirect(url_for('index'))
 

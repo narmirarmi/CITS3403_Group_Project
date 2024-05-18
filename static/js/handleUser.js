@@ -16,22 +16,17 @@ $(document).ready(function () {
     // Send the data using AJAX
     $.ajax({
       type: "POST",
-      url: "http://127.0.0.1:5000/auth/login",
+      url: "http://localhost:5000/auth/login",
       data: formData,
       success: function (response) {
         // Handle success
         console.log("Login successful", response.message);
-        alert(
-          "Login successful: \n" +
-            response.message +
-            "\n" +
-            response.session_token
-        );
         localStorage.setItem(
           "should_i_buy_it.current_session",
           response.session_token
         );
         console.log("Successfully wrote session token");
+        window.location.replace("../");
       },
       error: function (xhr, status, error) {
         // Handle errors

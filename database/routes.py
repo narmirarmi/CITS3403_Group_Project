@@ -43,7 +43,7 @@ def register_routes(app, db):
 
     @app.route('/')
     @app.route('/index')
-    #@login_required
+    @login_required
     def index():
 
         images = Image.query.all()

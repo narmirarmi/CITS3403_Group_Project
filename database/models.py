@@ -17,6 +17,18 @@ class User(db.Model):
     comments = db.relationship('Comment', backref='user', lazy=True)
     followers = db.relationship('Follow', foreign_keys='Follow.follower_id', backref='follower', lazy=True)
 
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+    
+    def get_id(self):
+        return str(self.id) 
+    
 # images table metadata
 class Image(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
