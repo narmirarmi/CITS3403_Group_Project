@@ -5,8 +5,29 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from config import TestingConfig
+from database.models import db
+from core_app import create_app
+import threading
 
-class TestShouldIBuyIt(unittest.TestCase):
+
+def run_app(app):
+    app.run(debug=False, use_reloader=False)
+
+
+class TestSocialMediaSite(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Initialize and configure the Flask app for testing
+        cls.app = create_app(config_class=TestingConfig)
+        cls.app_context = cls.app.app_context()
+        cls.app_context.push()
+        db.create_all()
+
+        # Start the Flask server in a background thread
+        cls.server_thread = threading.Thread(target=run_app, args=(cls.app,))
+        cls.server_thread.start()
+
     def setUp(self):
         # Setup method to initiate the WebDriver
         self.driver = webdriver.Chrome()
@@ -34,9 +55,9 @@ class TestShouldIBuyIt(unittest.TestCase):
         confirm_password = driver.find_element(By.ID, "registerRepeatPassword")
 
         # Send keys for registration details
-        name.send_keys("example name2")
-        username.send_keys("example username2")
-        email.send_keys("Imran2@example.com")
+        name.send_keys("example name3")
+        username.send_keys("example username3")
+        email.send_keys("Imran3@example.com")
         password.send_keys("password123")
         confirm_password.send_keys("password123")
         confirm_password.send_keys(Keys.RETURN)
@@ -78,6 +99,15 @@ class TestShouldIBuyIt(unittest.TestCase):
     def tearDown(self):
         # Close the browser window
         self.driver.quit()
+
+    @classmethod
+    def tearDownClass(cls):
+        # This part ensures that the application and server are properly shutdown
+        db.session.remove()
+        db.drop_all()
+        cls.app_context.pop()
+        # Stopping the Flask server
+        cls.server_thread.join()
 
 
 if __name__ == "__main__":
