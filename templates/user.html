@@ -1,4 +1,43 @@
 {% extends "base.html" %}
+
 {% block content %}
     <script src="/static/js/checkUser.js"></script>
+    
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col text-center">
+                <h1>Welcome, {{ current_user.username }}!</h1>
+                <p>Email: {{ current_user.email }}</p>
+                {% if current_user.profile_picture %}
+                    <img src="{{ url_for('static', filename=current_user.profile_picture) }}" alt="Profile Picture" class="img-thumbnail">
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Followers</h5>
+                        <p class="card-text">{{ num_followers }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Posts</h5>
+                        <p class="card-text">{{ num_posts }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Likes</h5>
+                        <p class="card-text">{{ num_likes }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
