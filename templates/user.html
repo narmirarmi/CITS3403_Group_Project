@@ -8,7 +8,7 @@
 
                 <!-- Profile Picture -->
                 <div class="profile-picture-container">
-                    {% if current_user.profile_pic %}
+                    {% if user.profile_pic %}
                         <img src="{{ url_for('static', filename='upload_folder/' + user.profile_pic) }}"
                              alt="Profile Picture">
                     {% else %}
@@ -18,11 +18,11 @@
                 </div>
 
                 <!-- Username -->
-                <h4 class="text-center">{{ current_user.username }}</h4>
+                <h4 class="text-center">{{ user.username }}</h4>
 
                 <!-- Follow / Unfollow Button -->
                 <div class="w-auto">
-                    <button class="btn btn-primary w-100" id="follow-button" onclick="toggleFollow({{ current_user.id }})">
+                    <button class="btn btn-primary w-100" id="follow-button" onclick="toggleFollow({{ user.id }})">
                         {% if isFollowing %}
                             Following
                         {% else %}
@@ -52,21 +52,12 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-10">
                         <div class="row image-grid">
-                            {% for image in current_user.images[::-1] %}
-                                {% if loop.index % 3 == 1 %}
-                                    <div class="row">
-                                {% endif %}
-                            
-                            <div class="col-md-4 mb-3">
-                                <div class="image-container">
-                                    <img src="{{ url_for('static', filename='upload_folder/' + image.image_path) }}"
-                                         alt="Uploaded Image" class="img-fluid image-thumbnail">
+                            {% for object in posts %}
+                                <div class="col-lg-4 col-md-6 col-sm-12">
+                                    {% with pollImage = url_for('static', filename="upload_folder/"+object.image_path) %}
+                                        {% include "poll/PollWidget.html" %}
+                                    {% endwith %}
                                 </div>
-                            </div>
-                            
-                            {% if loop.index % 3 == 0 or loop.last %}
-                                </div> <!-- Close the row -->
-                            {% endif %}
                             {% endfor %}
                         </div>
                     </div>

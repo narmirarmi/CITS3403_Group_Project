@@ -5,7 +5,7 @@
 from sqlalchemy.exc import IntegrityError
 from database.models import db, User, Session
 from jinja2 import TemplateNotFound
-from database.routes import get_followers_count, get_following_count, isFollowing, unfollow_user, follow_user
+from database.routes import get_followers_count, get_following_count, isFollowing, unfollow_user, follow_user, get_posts
 from flask_login import current_user
 
 from flask import (
@@ -31,7 +31,8 @@ def showUser(userid):
                                user=User.query.get(userid),
                                isFollowing=isFollowing(current_user.id, userid),
                                followers=get_followers_count(userid),
-                               following=get_following_count(userid))
+                               following=get_following_count(userid),
+                               posts=get_posts(userid))
     except TemplateNotFound:
         abort(404)
 
