@@ -1,12 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <!-- Check User Login State, defunct now methinks -->
-    <script src="/static/js/checkUser.js"></script>
-    
     <div class="container mx-2">
         <div class="row justify-content-start vh-100">
-            <div class="col-3 profile-head">
+            <div class="col-auto profile-head">
                 <h1></h1>
 
                 <!-- Profile Picture -->
@@ -21,19 +18,32 @@
                 </div>
 
                 <!-- Username -->
-                <h4>{{ user.username }}</h4>
+                <h4 class="text-center">{{ user.username }}</h4>
+
+                <!-- Follow / Unfollow Button -->
+                <div class="w-auto">
+                    <button class="btn btn-primary w-100" id="follow-button" onclick="toggleFollow({{ user.id }})">
+                        {% if isFollowing %}
+                            Following
+                        {% else %}
+                            Follow
+                        {% endif %}
+                    </button>
+                </div>
 
                 <!-- Followers and Following -->
-                <div class="row justify-content-around w-100 ">
+                <div class="row justify-content-around w-auto py-3">
                     <div class="col text-center">
-                        <p>{{ followers }}</p>
+                        <p id="followers-count">{{ followers }}</p>
                         <p>Followers</p>
                     </div>
                     <div class="col text-center">
-                        <p>{{ following }}</p>
+                        <p id="following-count">{{ following }}</p>
                         <p>Following</p>
                     </div>
                 </div>
+
+
 
             </div>
             
@@ -64,5 +74,7 @@
             </div>
         </div>
     </div>
+
+    <script src="../static/js/toggleFollowing.js"></script>
 
 {% endblock %}

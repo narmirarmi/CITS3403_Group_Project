@@ -1,7 +1,7 @@
 import sqlite3
 from flask import jsonify, render_template, request, redirect, url_for, Blueprint
 from flask_login import current_user, login_required, LoginManager
-from .models import Follow, Image, Vote, User
+from .models import db, Follow, Image, Vote, User
 from sqlalchemy.exc import IntegrityError
 import os
 import re
@@ -12,19 +12,17 @@ from werkzeug.utils import secure_filename
 image_info = []
 
 def follow_user(current_user_id, user_id):
-    conn = sqlite3.connect('should_i_buy_it.db')
-    c = conn.cursor()
-    c.execute("INSERT INTO follow (follower_id, followee_id) VALUES (?, ?)", (current_user_id, user_id))
-    conn.commit()
-    conn.close()
+    db.session.add(Follow(followee_id=user_id, follower_id=current_user_id))
+    db.session.commit()
 
 def unfollow_user(current_user_id, user_id):
-    conn = sqlite3.connect('should_i_buy_it.db')
-    c = conn.cursor()
-    c.execute("DELETE FROM follow WHERE follower_id = ? AND followee_id = ?", (current_user_id, user_id))
-    conn.commit()
-    conn.close()
+    db.session.delete(Follow.query.filter_by(followee_id=user_id, follower_id=current_user_id).first())
+    db.session.commit()
 
+def isFollowing(current_user_id, followed_user_id):
+    if Follow.query.filter_by(follower_id=current_user_id, followee_id=followed_user_id).first() is not None:
+        return True
+    return False
 
 def get_followers_count(user_id):
     followers_count = Follow.query.filter_by(followee_id=user_id).count()

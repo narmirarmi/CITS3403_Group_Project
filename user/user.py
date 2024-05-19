@@ -5,7 +5,7 @@
 from sqlalchemy.exc import IntegrityError
 from database.models import db, User, Session
 from jinja2 import TemplateNotFound
-from database.routes import get_followers_count, get_following_count
+from database.routes import get_followers_count, get_following_count, isFollowing, unfollow_user, follow_user
 from flask_login import current_user
 
 from flask import (
@@ -26,7 +26,29 @@ def showUser(userid):
     try:
         return render_template('user.html',
                                user=User.query.get(userid),
+                               isFollowing=isFollowing(current_user.id, userid),
                                followers=get_followers_count(userid),
                                following=get_following_count(userid))
     except TemplateNotFound:
         abort(404)
+
+@user.route('/follow', methods=['POST'])
+def followUser():
+    followee = request.form.get('userid')
+    print("retrieved followee id of ", followee)
+
+    if isFollowing(current_user.id, followee):
+        unfollow_user(current_user.id, followee)
+        return jsonify(message='Successfully unfollowed {}'.format(followee),
+                       status="unfollowed",
+                       follower_count=get_followers_count(followee),
+                       following_count=get_following_count(followee)), 200
+    else:
+        follow_user(current_user.id, followee)
+        return jsonify(message='Successfully followed {}'.format(followee),
+                       status="followed",
+                       follower_count=get_followers_count(followee),
+                       following_count=get_following_count(followee)), 200
+
+    return jsonify('User does not exist'), 400
+
