@@ -51,20 +51,25 @@ class SocialMediaAppTestCase(unittest.TestCase):
         self.assertEqual(len(user1.followers), 0)
 
     def test_like_dislike(self):
-        user = User(username='testuser', email='test@example.com', password='pass')
+        user = User(username='testuser', email='test@example.com', password=generate_password_hash('pass'))
+        db.session.add(user)
+        db.session.commit()  # Ensure user is saved and id is set
+
         image = Image(user_id=user.id, image_path='path/to/image.jpg', post_title='Test Post',
                       post_description='Description')
-        db.session.add_all([user, image])
-        db.session.commit()
+        db.session.add(image)
+        db.session.commit()  # Ensure image is saved and related to user
 
         vote = Vote(image_id=image.id, user_id=user.id, type='like')
         db.session.add(vote)
-        db.session.commit()
-        self.assertEqual(Vote.query.filter_by(type='like').count(), 1)
+        db.session.commit()  # Commit the vote
 
+        self.assertEqual(Vote.query.filter_by(image_id=image.id, type='like').count(), 1)
+
+        # Change like to dislike
         vote.type = 'dislike'
         db.session.commit()
-        self.assertEqual(Vote.query.filter_by(type='dislike').count(), 1)
+        self.assertEqual(Vote.query.filter_by(image_id=image.id, type='dislike').count(), 1)
 
     def test_image_upload(self):
         user = User(username='charlie', email='charlie@example.com', password='pass')
