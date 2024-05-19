@@ -9,7 +9,7 @@ from config import TestingConfig
 from database.models import db
 from core_app import create_app
 import threading
-
+import time
 
 def run_app(app):
     app.run(debug=False, use_reloader=False)
@@ -18,96 +18,86 @@ def run_app(app):
 class TestSocialMediaSite(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # Initialize and configure the Flask app for testing
-        cls.app = create_app(config_class=TestingConfig)
+        # Initialize and configure the Flask app for testing with an in-memory database
+        cls.app = create_app()  # Assuming create_app allows configuration overrides
+        cls.app.config.update({
+            'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
+            'SQLALCHEMY_TRACK_MODIFICATIONS': False,
+            'TESTING': True,
+            'UPLOAD_FOLDER': '/upload_folder',  # Adjust as necessary
+        })
         cls.app_context = cls.app.app_context()
         cls.app_context.push()
-        db.create_all()
+
+        with cls.app.app_context():
+            db.create_all()
 
         # Start the Flask server in a background thread
         cls.server_thread = threading.Thread(target=run_app, args=(cls.app,))
         cls.server_thread.start()
+        time.sleep(5)
+
+    @classmethod
+    def tearDownClass(cls):
+        db.session.remove()
+        db.drop_all()
+        cls.app_context.pop()
+        cls.server_thread.join()
 
     def setUp(self):
         # Setup method to initiate the WebDriver
         self.driver = webdriver.Chrome()
 
-    def test_user_registration(self):
+
+    def test_user_registration_and_login(self):
         driver = self.driver
         driver.get("http://127.0.0.1:5000/login")
 
-        # Click the 'Register' pill to switch to the registration form from the login form
-        register_tab = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.ID, "tab-register"))
-        )
-        register_tab.click()
-
-        # Wait for registration form to be visible
+        # Navigate to the registration form
         WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.ID, "pills-register"))
+            EC.element_to_be_clickable((By.ID, "tab-register"))
+        ).click()
+
+        # Enter registration details
+        WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "registerName"))
+        ).send_keys("example name")
+        driver.find_element(By.ID, "registerUsername").send_keys("exampleusername")
+        driver.find_element(By.ID, "registerEmail").send_keys("email@example.com")
+        driver.find_element(By.ID, "registerPassword").send_keys("password123")
+        driver.find_element(By.ID, "registerRepeatPassword").send_keys("password123")
+        driver.find_element(By.ID, "registerRepeatPassword").send_keys(Keys.RETURN)
+
+        # Wait for and assert registration success message or redirect
+        alert = WebDriverWait(driver, 10).until(EC.alert_is_present())
+        alert = driver.switch_to.alert
+        alert.accept()
+
+        # Navigate to the login form may not be needed as we refresh*
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.ID, "tab-login"))
+        ).click()
+
+        # Log in with the newly registered user
+        driver.get("http://127.0.0.1:5000/login")
+        WebDriverWait(driver, 10).until(
+            EC.visibility_of_element_located((By.ID, "loginName"))
+        ).send_keys("email@example.com")
+        driver.find_element(By.ID, "loginPassword").send_keys("password123")
+        login_submit_button = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.btn.btn-primary.btn-block.mb-4"))
         )
+        login_submit_button.click()
 
-        # Locate input fields by id
-        name = driver.find_element(By.ID, "registerName")
-        username = driver.find_element(By.ID, "registerUsername")
-        email = driver.find_element(By.ID, "registerEmail")
-        password = driver.find_element(By.ID, "registerPassword")
-        confirm_password = driver.find_element(By.ID, "registerRepeatPassword")
-
-        # Send keys for registration details
-        name.send_keys("example name3")
-        username.send_keys("example username3")
-        email.send_keys("Imran3@example.com")
-        password.send_keys("password123")
-        confirm_password.send_keys("password123")
-        confirm_password.send_keys(Keys.RETURN)
-
-        # Wait for and handle the alert
-        try:
-            WebDriverWait(driver, 10).until(EC.alert_is_present(),
-                                            "Timed out waiting for registration success alert to appear.")
-            alert = driver.switch_to.alert
-            alert_text = alert.text
-            # Assert the alert text to confirm successful registration
-            self.assertEqual("Registration successful!", alert_text)
-            alert.accept()
-            print("Registration success alert was confirmed and accepted.")
-        except TimeoutException:
-            print("No alert appeared within 10 seconds")
-
-        def test_user_login(self):
-            driver = self.driver
-            driver.get("http://127.0.0.1:5000/login")
-
-            # Locate input fields by id
-            email = driver.find_element(By.ID, "loginName")
-            password = driver.find_element(By.ID, "loginPassword")
-
-            # Send keys for registration details
-            email.send_keys("testuser")
-            password.send_keys("password123")
-            confirm_password.send_keys("password123")
-            confirm_password.send_keys(Keys.RETURN)
-
-            # Wait for the registration to complete and check for success message
-            success_message = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.ID, "success_message"))
-            )
-            # Verify registration was successful
-            self.assertIn("Registration successful", success_message.text)
+        # Verify login by checking if "Add New Listing" button is clickable
+        WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-bs-target='#addListingModal']"))
+        )
+        self.assertTrue(driver.find_element(By.CSS_SELECTOR, "[data-bs-target='#addListingModal']").is_displayed())
 
     def tearDown(self):
         # Close the browser window
         self.driver.quit()
-
-    @classmethod
-    def tearDownClass(cls):
-        # This part ensures that the application and server are properly shutdown
-        db.session.remove()
-        db.drop_all()
-        cls.app_context.pop()
-        # Stopping the Flask server
-        cls.server_thread.join()
 
 
 if __name__ == "__main__":
