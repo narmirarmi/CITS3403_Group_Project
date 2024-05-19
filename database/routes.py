@@ -73,6 +73,25 @@ def register_routes(app, db):
         print("Current user", current_user.username)
         return render_template('index.html', images=image_info, tab_bottom=True)
     
+    @app.route('/profile')
+    @login_required
+    def profile():
+        # Aggregate counts
+        num_followers = Follow.query.filter_by(followee_id=current_user.id).count()
+        num_following = Follow.query.filter_by(follower_id=current_user.id).count()
+        num_posts = Image.query.filter_by(user_id=current_user.id).count()
+        num_likes = db.session.query(Vote).join(Image).filter(
+            Vote.type == 'like',
+            Image.user_id == current_user.id
+        ).count()
+
+        return render_template('user.html', 
+                            followers=num_followers, 
+                            following=num_following,
+                            num_posts=num_posts, 
+                            num_likes=num_likes, tab_bottom=True)
+
+    
     @app.route('/vote', methods=['POST'])
     @login_required
     def vote():
