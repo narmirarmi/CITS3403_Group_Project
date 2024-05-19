@@ -1,0 +1,4 @@
+These tests aim to test the correctness of the database schema:
+- Table creation scripts
+- Correct default values
+- Correct and well enforced constraints (not-null, unique)
