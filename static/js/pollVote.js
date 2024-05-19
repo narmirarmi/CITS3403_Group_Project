@@ -35,8 +35,6 @@ function onPollVote(vote, image) {
     data: { choice: vote, image: image }, // Adjusted data parameters
     success: function (response) {
       /* Updates the UI with the new votes */
-      image = image.split("/").pop();
-      image = image.split(".")[0];
       updateResults(response, image);
       console.log("Vote successfully submitted");
     },

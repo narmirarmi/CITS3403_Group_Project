@@ -18,11 +18,11 @@
                 </div>
 
                 <!-- Username -->
-                <h4 class="text-center">{{ user.username }}</h4>
+                <h4 class="text-center">{{ current_user.username }}</h4>
 
                 <!-- Follow / Unfollow Button -->
                 <div class="w-auto">
-                    <button class="btn btn-primary w-100" id="follow-button" onclick="toggleFollow({{ user.id }})">
+                    <button class="btn btn-primary w-100" id="follow-button" onclick="toggleFollow({{ current_user.id }})">
                         {% if isFollowing %}
                             Following
                         {% else %}
