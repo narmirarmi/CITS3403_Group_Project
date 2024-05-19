@@ -1,7 +1,7 @@
 # Architecture
 ___
 ## Running
-Run the flask server with `python3 app.py`
+Run the flask server with `python3 core_app.py`
 
 ## Test Environment
 To run the test environment, use `testwidget.py`.\

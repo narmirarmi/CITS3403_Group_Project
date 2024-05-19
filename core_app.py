@@ -28,8 +28,8 @@ def create_app(config_class='config.DevelopmentConfig'):
         from flask import redirect, url_for
         return redirect(url_for('login'))
 
-    from blueprints.auth import auth
-    from blueprints.user import user
+    from auth.auth import auth
+    from user.user import user
     app.register_blueprint(auth)
     app.register_blueprint(user)
 
