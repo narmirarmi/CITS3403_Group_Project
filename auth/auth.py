@@ -9,7 +9,6 @@
 import re
 from sqlalchemy.exc import IntegrityError
 
-import blueprints
 from database.models import db, User, Session
 
 from flask import (

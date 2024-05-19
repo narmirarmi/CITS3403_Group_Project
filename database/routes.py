@@ -80,6 +80,7 @@ def register_routes(app, db):
     def profile():
         # Aggregate counts
         num_followers = Follow.query.filter_by(followee_id=current_user.id).count()
+        num_following = Follow.query.filter_by(follower_id=current_user.id).count()
         num_posts = Image.query.filter_by(user_id=current_user.id).count()
         num_likes = db.session.query(Vote).join(Image).filter(
             Vote.type == 'like',
@@ -87,7 +88,8 @@ def register_routes(app, db):
         ).count()
 
         return render_template('user.html', 
-                            num_followers=num_followers, 
+                            followers=num_followers, 
+                            following=num_following,
                             num_posts=num_posts, 
                             num_likes=num_likes, tab_bottom=True)
 
