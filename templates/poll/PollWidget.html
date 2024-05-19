@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <script src="{{ url_for('static', filename='js/pollVote.js') }}"></script>
+
 </head>
 <body>
     <div class="card d-block h-100 mb-4">
@@ -13,6 +13,7 @@
                 <div class="card-body px-0">
                     <div class="col px-0">
                         <h5 class="card-title" id="itemPrice">{{ object.image_title }}</h5>
+                        <a class="py-2" id="itemPoster" href="user/{{ object.user_id }}">{{ object.username }}</a>
                         <p class="card-text" id="itemDescription">{{ object.image_description }}</p>
     
                     </div>

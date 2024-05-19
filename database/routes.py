@@ -61,6 +61,7 @@ def register_routes(app, db):
             image_info.append({
                 'id': image.id,
                 'user_id': image.user_id,
+                'username': User.query.filter_by(id=image.user_id).first().username,
                 'image_path': image.image_path,
                 'upload_date': image.upload_date.strftime('%Y-%m-%d %H:%M:%S'),
                 'likes_count': likes_count,
