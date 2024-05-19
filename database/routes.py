@@ -86,11 +86,7 @@ def register_routes(app, db):
             Image.user_id == current_user.id
         ).count()
 
-        return render_template('user.html', 
-                            followers=num_followers, 
-                            following=num_following,
-                            num_posts=num_posts, 
-                            num_likes=num_likes, tab_bottom=True)
+        return render_template('user.html', followers=num_followers, following=num_following, num_posts=num_posts, num_likes=num_likes, tab_bottom=True)
 
     
     @app.route('/vote', methods=['POST'])
@@ -104,11 +100,10 @@ def register_routes(app, db):
             if user_id is None:
                 return jsonify({'error': 'User not logged in'}), 401
 
-            if "/images" in selected_image:
-                selected_image = selected_image.split("/images/")[1]
             #Vote references ID not path, so needs to get the corresponding ID
-            image_id = db.session.query(Image.id).filter_by(image_path=selected_image).first()
+            image_id = db.session.query(Image.id).filter_by(id=selected_image).first()
             # Needs to be the first item image_id the tuple
+            print(image_id)
             image_id = image_id[0]
 
             # Check if they already voted for this image
