@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash, LoginManager
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 from flask_cors import CORS
 from database.models import db, Vote, Follow, Comment, User, Image
 from database.routes import register_routes
