@@ -2,7 +2,27 @@
 
 Repo for the Agile Web Development
 
-EACH OF OUR CONTRIBUTIONS FOR PROGRESS TRACKING ARE IN TABLES BELOW
+## Group Members
+
+| UWA ID | Name | Github Username |
+|----------|----------|----------|
+| 23404819 | Tim Zandi | zazwaz12 | 
+| 23409857 | Imran Barton | superglubglub | 
+| 23434844 | Maxwell Slater | narmirarmi |
+| 23642415 | Sepehr Moghani | sepehrmoghani |
+
+
+## To Launch the Application
+With in Visual Studio Code terminal.
+Firstly, download all the requirement for the application. 
+ 
+  pip install -r requirements.txt
+
+Then, CD into the project level directory, run the application through entry point app.py.
+
+  python app.py
+
+**instructions for how to run the tests for the application.**
 
 ## About Project
 
