@@ -33,10 +33,34 @@ def get_following_count(user_id):
     return following_count
 
 def get_posts(user_id):
-    posts = []
-    for post in Image.query.filter_by(user_id=user_id).all():
-        posts.append(post)
-    return posts
+    images = []
+    for image in Image.query.filter_by(user_id=user_id).all():
+        likes_count = Vote.query.filter_by(image_id=image.id, type='like').count()
+        dislikes_count = Vote.query.filter_by(image_id=image.id, type='dislike').count()
+
+        user_vote = None  # Default to None if user hasn't voted
+        # if current_user.is_authenticated:  # Check if user is authenticated
+        # replace with the current_user
+        user_vote = Vote.query.filter_by(image_id=image.id, user_id=current_user.id).first()
+        if user_vote:
+            print(user_vote.type)
+            user_vote = user_vote.type  # Get the vote type if user has voted
+
+        images.append({
+            'id': image.id,
+            'user_id': image.user_id,
+            'username': User.query.filter_by(id=image.user_id).first().username,
+            'image_path': image.image_path,
+            'upload_date': image.upload_date.strftime('%Y-%m-%d %H:%M:%S'),
+            'likes_count': likes_count,
+            'dislikes_count': dislikes_count,
+            'comments_count': len(image.comments),
+            'user_vote': user_vote,
+            'image_title': image.post_title,
+            'image_description': image.post_description
+        })
+
+    return images
 
 # Function to check if file extension is allowed
 def allowed_file(filename):
