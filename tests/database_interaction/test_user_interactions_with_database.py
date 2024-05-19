@@ -11,7 +11,7 @@ class SocialMediaAppTestCase(unittest.TestCase):
         cls.app = Flask(__name__)
         cls.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
         cls.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-        cls.app.config['UPLOAD_FOLDER'] = '/path/to/upload'
+        cls.app.config['UPLOAD_FOLDER'] = 'static/upload_folder'
         db.init_app(cls.app)
         with cls.app.app_context():
             db.create_all()
@@ -55,7 +55,7 @@ class SocialMediaAppTestCase(unittest.TestCase):
         db.session.add(user)
         db.session.commit()  # Ensure user is saved and id is set
 
-        image = Image(user_id=user.id, image_path='path/to/image.jpg', post_title='Test Post',
+        image = Image(user_id=user.id, image_path='tests/test_data/burger.png', post_title='Test Post',
                       post_description='Description')
         db.session.add(image)
         db.session.commit()  # Ensure image is saved and related to user
@@ -90,7 +90,7 @@ class SocialMediaAppTestCase(unittest.TestCase):
         db.session.add(user)
         db.session.commit()
 
-        image = Image(user_id=user.id, image_path='path/to/image.jpg', post_title='Test Post',
+        image = Image(user_id=user.id, image_path='tests/test_data/burger.jpg', post_title='Test Post',
                       post_description='Description')
         db.session.add(image)
         db.session.commit()

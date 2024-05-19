@@ -24,7 +24,7 @@ class TestSocialMediaSite(unittest.TestCase):
             'SQLALCHEMY_DATABASE_URI': 'sqlite:///:memory:',
             'SQLALCHEMY_TRACK_MODIFICATIONS': False,
             'TESTING': True,
-            'UPLOAD_FOLDER': '/upload_folder',  # Adjust as necessary
+            'UPLOAD_FOLDER': '/static/upload_folder',  # Adjust as necessary
         })
         cls.app_context = cls.app.app_context()
         cls.app_context.push()
@@ -94,6 +94,33 @@ class TestSocialMediaSite(unittest.TestCase):
             EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-bs-target='#addListingModal']"))
         )
         self.assertTrue(driver.find_element(By.CSS_SELECTOR, "[data-bs-target='#addListingModal']").is_displayed())
+
+        def test_uploading_image(self):
+            # Log in as a user first
+            self.test_user_registration_and_login()
+
+            # Open the modal to add a new listing
+            WebDriverWait(self.driver, 10).until(
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "[data-bs-target='#addListingModal']"))
+            ).click()
+
+            # Wait for the modal to be visible
+            WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.ID, "addListingModal"))
+            )
+
+            # Fill out the image upload form
+            title = WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located((By.ID, "title"))
+            )
+            title.send_keys("My Test Image")
+            self.driver.find_element(By.ID, "description").send_keys("Description of my test image")
+
+            self.driver.find_element(By.ID, "image").send_keys("/tests/test_data/burger.jpg")
+
+            # Submit the form
+            self.driver.find_element(By.CSS_SELECTOR, "#addListingForm button[type='submit']").click()
+
 
     def tearDown(self):
         # Close the browser window
