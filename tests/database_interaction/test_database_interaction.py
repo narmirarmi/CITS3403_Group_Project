@@ -5,6 +5,7 @@ import unittest
 from database.models import db, User, Image
 from flask import Flask
 
+
 class TestDatabaseInteractions(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -15,7 +16,8 @@ class TestDatabaseInteractions(unittest.TestCase):
         with cls.app.app_context():
             db.create_all()
 
-    def tearDownClass(self, cls):
+    @classmethod
+    def tearDownClass(cls):
         with cls.app.app_context():
             db.drop_all()
 
