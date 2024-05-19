@@ -8,5 +8,18 @@ class Config(object):
 	# session expiry timer (in hours)
 	SESSION_EXPIRY = 18
 
+
 class InitialisingConfig(Config):
 	RELOAD_DB = True
+
+
+class DevelopmentConfig(Config):
+	"""Development configuration."""
+	DEBUG = True
+	SQLALCHEMY_DATABASE_URI = 'sqlite:///should_i_buy_it.db'
+
+
+class TestingConfig(Config):
+	"""Testing configuration."""
+	TESTING = True
+	SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
