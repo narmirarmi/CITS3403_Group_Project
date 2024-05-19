@@ -12,7 +12,7 @@
                 <!-- Profile Picture -->
                 <div class="profile-picture-container">
                     {% if current_user.profile_pic %}
-                        <img src="{{ url_for('static', filename='upload_folder/' + current_user.profile_pic) }}"
+                        <img src="{{ url_for('static', filename='upload_folder/' + user.profile_pic) }}"
                              alt="Profile Picture">
                     {% else %}
                         <img src="{{ url_for('static', filename='upload_folder/user-icon.png') }}"
@@ -21,16 +21,16 @@
                 </div>
 
                 <!-- Username -->
-                <h4>{{ current_user.username }}</h4>
+                <h4>{{ user.username }}</h4>
 
                 <!-- Followers and Following -->
                 <div class="row justify-content-around w-100 ">
                     <div class="col text-center">
-                        <p>0</p>
+                        <p>{{ followers }}</p>
                         <p>Followers</p>
                     </div>
                     <div class="col text-center">
-                        <p>0</p>
+                        <p>{{ following }}</p>
                         <p>Following</p>
                     </div>
                 </div>
