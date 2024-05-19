@@ -6,7 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-class TestSocialMediaSite(unittest.TestCase):
+class TestShouldIBuyIt(unittest.TestCase):
     def setUp(self):
         # Setup method to initiate the WebDriver
         self.driver = webdriver.Chrome()
@@ -82,3 +82,5 @@ class TestSocialMediaSite(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+    # TODO register same person test, login after registration test, database wiping, image uploading, commenting, liking / disliking an image
