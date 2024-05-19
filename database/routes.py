@@ -1,6 +1,6 @@
 import sqlite3
 from flask import jsonify, render_template, request, redirect, url_for, Blueprint
-from flask_login import current_user, login_required, LoginManager
+from flask_login import current_user, login_required, LoginManager, logout_user
 from .models import db, Follow, Image, Vote, User
 from sqlalchemy.exc import IntegrityError
 import os
@@ -32,10 +32,17 @@ def get_following_count(user_id):
     following_count = Follow.query.filter_by(follower_id=user_id).count()
     return following_count
 
+def get_posts(user_id):
+    posts = []
+    for post in Image.query.filter_by(user_id=user_id).all():
+        posts.append(post)
+    return posts
+
 # Function to check if file extension is allowed
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ['jpg', 'jpeg', 'png', 'gif']
+
 
 def register_routes(app, db):
 
@@ -179,6 +186,10 @@ def register_routes(app, db):
     def login():
         return render_template('login.html')
 
+    @app.route('/logout')
+    def logout():
+        logout_user()
+        return redirect(url_for('login'))
 
     @app.route('/register', methods=['POST'])
     def register():

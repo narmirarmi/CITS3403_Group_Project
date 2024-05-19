@@ -18,7 +18,10 @@ user = Blueprint('user', __name__, url_prefix='/user', template_folder='template
 
 @user.route('/')
 def redirect_to_user():
-    return redirect(url_for('user.showUser', userid=current_user.id))
+    if current_user.is_active:
+        return redirect(url_for('user.showUser', userid=current_user.id))
+    else:
+        return redirect(url_for('login'))
 
 @user.route('/<userid>')
 def showUser(userid):
